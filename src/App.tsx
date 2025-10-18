@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import Box3D from './components/Box3D'
+import ContentSection from './components/ContentSection'
 
 // Simple Perlin noise implementation
 class PerlinNoise {
@@ -59,10 +61,25 @@ class PerlinNoise {
   }
 }
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number | null>(null)
   const perlinRef = useRef<PerlinNoise>(new PerlinNoise())
+  
+  // Navigation state
+  const [activeSection, setActiveSection] = useState<string | null>(null)
+  
+  // Box data
+  const boxes = [
+    { id: 'intro', title: 'INTRO', icon: '>_' },
+    { id: 'experience', title: 'EXP', icon: '{}' },
+    { id: 'projects', title: 'PROJ', icon: '[]' },
+    { id: 'contact', title: 'CONTACT', icon: '@' }
+  ]
+  
+  const handleBoxClick = (boxId: string) => {
+    setActiveSection(activeSection === boxId ? null : boxId)
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -142,6 +159,7 @@ function App(): JSX.Element {
 
   return (
     <div className="min-h-screen relative bg-off-white">
+      {/* ASCII Background Canvas */}
       <canvas 
         ref={canvasRef} 
         className="fixed top-0 left-0 w-full h-full pointer-events-none"
@@ -153,10 +171,44 @@ function App(): JSX.Element {
           pointerEvents: 'none'
         }}
       />
-      {/* Test Tailwind classes */}
-      <div className="fixed top-4 right-4 bg-white text-black p-2 z-10 ">
+      
+      {/* System Status */}
+      <div className="fixed top-4 right-4 bg-black/80 text-cyan-400 p-3 rounded border border-gray-600 font-mono text-sm z-10">
         [ SYSTEM ONLINE ]
       </div>
+      
+      {/* 3D Boxes Container - Centered */}
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-full">
+        <div className="flex space-x-8 w-full justify-around ">
+          {boxes.map((box, index) => (
+            <Box3D
+              key={box.id}
+              autoSpin={true}
+              spinSeed={index}
+              title={box.title}
+              icon={box.icon}
+              onClick={() => handleBoxClick(box.id)}
+              isActive={activeSection === box.id}
+            />
+          ))}
+        </div>
+      </div>
+      
+      {/* Content Section */}
+      <ContentSection 
+        type={activeSection as 'intro' | 'experience' | 'projects' | 'contact'} 
+        isActive={!!activeSection} 
+      />
+      
+      {/* Close button when content is open */}
+      {activeSection && (
+        <button
+          onClick={() => setActiveSection(null)}
+          className="fixed top-4 left-4 bg-red-600 hover:bg-red-700 text-white p-2 rounded font-mono text-sm z-30 transition-colors"
+        >
+          [ CLOSE ]
+        </button>
+      )}
     </div>
   )
 }
