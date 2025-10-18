@@ -103,12 +103,12 @@ function App(): React.JSX.Element {
     // ASCII noise animation
     const animate = () => {
       // Clear canvas with off-white background
-      ctx.fillStyle = '#f8f8f8'
+      ctx.fillStyle = '#000'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
       
       // Set font for ASCII characters
       ctx.font = '12px Courier New, monospace'
-      ctx.fillStyle = '#454545'
+      ctx.fillStyle = '#ffffff95'
       
       const charWidth = 8
       const charHeight = 12
@@ -158,7 +158,7 @@ function App(): React.JSX.Element {
   }, [])
 
   return (
-    <div className="min-h-screen relative bg-off-white">
+    <div className="min-h-screen relative bg-black">
       {/* ASCII Background Canvas */}
       <canvas 
         ref={canvasRef} 
@@ -168,7 +168,7 @@ function App(): React.JSX.Element {
           top: 0,
           left: 0,
           zIndex: 1,
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         }}
       />
       

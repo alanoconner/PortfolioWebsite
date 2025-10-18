@@ -90,7 +90,7 @@ const Box3D: React.FC<Box3DProps> = ({
             transform: T.top(expanded),
           }}
         >
-          <div className={isActive ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
+          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
             <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
             {title && (
               <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
@@ -110,7 +110,16 @@ const Box3D: React.FC<Box3DProps> = ({
             height: s,
             transform: T.front(expanded),
           }}
-        />
+        >
+          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
+            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
+            {title && (
+              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+                {title}
+              </div>
+            )}
+          </div>
+        </div>
 
         <div
           style={{
@@ -119,7 +128,16 @@ const Box3D: React.FC<Box3DProps> = ({
             height: s,
             transform: T.right(expanded),
           }}
-        />
+        >
+          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
+            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
+            {title && (
+              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+                {title}
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* The complementary faces fade in and move to -Z, -Y, -X */}
         <div
@@ -130,7 +148,16 @@ const Box3D: React.FC<Box3DProps> = ({
             transform: T.bottom(expanded),
             opacity: expanded ? 0.96 : 0,
           }}
-        />
+        >
+          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
+            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
+            {title && (
+              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+                {title}
+              </div>
+            )}
+          </div>
+        </div>
 
         <div
           style={{
@@ -140,7 +167,16 @@ const Box3D: React.FC<Box3DProps> = ({
             transform: T.back(expanded),
             opacity: expanded ? 0.96 : 0,
           }}
-        />
+        >
+          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
+            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
+            {title && (
+              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+                {title}
+              </div>
+            )}
+          </div>
+        </div>
 
         <div
           style={{
@@ -150,7 +186,16 @@ const Box3D: React.FC<Box3DProps> = ({
             transform: T.left(expanded),
             opacity: expanded ? 0.96 : 0,
           }}
-        />
+        >
+          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
+            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
+            {title && (
+              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+                {title}
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* outline rings */}
         {/* <div className="pointer-events-none absolute -inset-1 border border-gray-400/30" />
