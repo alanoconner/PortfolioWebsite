@@ -1,15 +1,8 @@
 .app {
-  min-height: 100vh;
-  position: relative;
-  background: #f8f8f8;
+  @apply min-h-screen relative bg-off-white;
 }
 
 .ascii-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  @apply fixed top-0 left-0 w-full h-full pointer-events-none;
   z-index: 1;
-  pointer-events: none;
 }
