@@ -7,24 +7,35 @@ interface ContentSectionProps {
 }
 
 // Custom hook for typing animation
-const useTypingAnimation = (text: string, speed: number = 50) => {
+const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0) => {
   const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    if (currentIndex < text.length) {
+    // Start the animation after the delay
+    const startTimer = setTimeout(() => {
+      setHasStarted(true);
+    }, delay);
+
+    return () => clearTimeout(startTimer);
+  }, [delay]);
+
+  useEffect(() => {
+    if (hasStarted && currentIndex < text.length) {
       const timeout = setTimeout(() => {
         setDisplayedText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
       }, speed);
       return () => clearTimeout(timeout);
     }
-  }, [currentIndex, text, speed]);
+  }, [currentIndex, text, speed, hasStarted]);
 
   // Reset when text changes
   useEffect(() => {
     setDisplayedText('');
     setCurrentIndex(0);
+    setHasStarted(false);
   }, [text]);
 
   return displayedText;
@@ -128,8 +139,8 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
   if (!isActive) return null;
 
   const renderContent = () => {
-    const TypingText = ({ text, className = "" }: { text: string; className?: string }) => {
-      const displayedText = useTypingAnimation(text, 5);
+    const TypingText = ({ text, className = "", delay = 0 }: { text: string; className?: string; delay?: number }) => {
+      const displayedText = useTypingAnimation(text, 5, delay);
       return <span className={className}>{displayedText}</span>;
     };
 
@@ -149,16 +160,23 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
                 <span className="text-cyan-400">$</span> whoami
               </div>
               <div className="text-white space-y-2">
-                <p><TypingText text={introText} /></p>
+                <p><TypingText text={introText} delay={0} /></p>
               </div>
               <div className="text-white space-y-2">
-                <br /><span className="text-cyan-400">$</span><span className="text-green-400"> cat education.txt</span><br />
-                <span>---------------------------------------------</span><br />
-                <p><TypingText text={introEduText} /></p>
+                <br />
+                <span className="text-cyan-400">
+                  <TypingText text='$' delay={introText.length * 5 + 500} ></TypingText> 
+                </span>
+                <span className="text-green-400" > 
+                  <TypingText text=' cat education.txt' delay={introText.length * 5 + 700} ></TypingText> 
+                </span>
+                <br />
+                <span> <TypingText text='' delay={introText.length * 5 + 1000} /></span><br />
+                <p><TypingText text={introEduText} delay={introText.length * 5 + 1300} /></p>
               </div>
-              <div className="text-green-400 mt-4">
+              {/* <div className="text-green-400 mt-4">
                 <span className="text-cyan-400">$</span> _
-              </div>
+              </div> */}
             </div>
           </div>
         );
@@ -181,19 +199,20 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
               
                 {
                   experiences.map((exp, index) => {
+                    const baseDelay = index * 4500; // 3 seconds between each experience
                     return (
                       <div key={index} className={`border-l-2 border-${exp.color} pl-4`}>
-                        <div className={"text-"+exp.color}><TypingText text={exp.position} /></div>
-                        <div className="text-gray-400"><TypingText text={exp.timeAndPlace} /></div>
-                        <div className="text-gray-300 text-xs mt-1"><TypingText text={exp.responsibilities} /></div>
+                        <div className={"text-"+exp.color}><TypingText text={exp.position} delay={baseDelay} /></div>
+                        <div className="text-gray-400"><TypingText text={exp.timeAndPlace} delay={baseDelay + exp.position.length * 5 + 200} /></div>
+                        <div className="text-gray-300 text-xs mt-1"><TypingText text={exp.responsibilities} delay={baseDelay + exp.position.length * 5 + exp.timeAndPlace.length * 5 + 400} /></div>
                       </div>
                     )
                   })
                 }
               </div>
-              <div className="text-green-400 mt-4">
+              {/* <div className="text-green-400 mt-4">
                 <span className="text-cyan-400">$</span> _
-              </div>
+              </div> */}
             </div>
           </div>
         );
@@ -214,17 +233,20 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
               </div>
               <div className="text-white space-y-3 text-nowrap ">
                 {
-                  projects.map((pr, index) => (
-                    <div key={index} className="flex items-center space-x-4 p-2 hover:bg-gray-800 rounded justify-between">
-                      <span className="text-yellow-400"><TypingText text={pr.name} /></span>
-                      <span className="text-gray-400"><TypingText text={pr.stack} /></span>
-                    </div>
-                  ))
+                  projects.map((pr, index) => {
+                    const baseDelay = index * 800; // 2 seconds between each project
+                    return (
+                      <div key={index} className="flex items-center space-x-4 p-2 hover:bg-gray-800 rounded gap-5">
+                        <span className="text-yellow-400"><TypingText text={pr.name} delay={baseDelay} /></span>
+                        <span className="text-gray-400"><TypingText text={pr.stack} delay={baseDelay + pr.name.length * 5 + 50} /></span>
+                      </div>
+                    )
+                  })
                 }
               </div>
-              <div className="text-green-400 mt-4">
+              {/* <div className="text-green-400 mt-4">
                 <span className="text-cyan-400">$</span> _
-              </div>
+              </div> */}
             </div>
           </div>
         );
@@ -245,25 +267,25 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
               </div>
               <div className="text-white space-y-3">
                 <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="Email:" /></span>
-                  <span className="text-yellow-400"><TypingText text="akhmadullin01@gmail.com" /></span>
+                  <span className="text-cyan-400"><TypingText text="Email:" delay={0} /></span>
+                  <span className="text-yellow-400"><TypingText text="akhmadullin01@gmail.com" delay={100} /></span>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="GitHub:" /></span>
-                  <span className="text-yellow-400"><TypingText text="github.com/alanoconner" /></span>
+                  <span className="text-cyan-400"><TypingText text="GitHub:" delay={300} /></span>
+                  <span className="text-yellow-400"><TypingText text="github.com/alanoconner" delay={400} /></span>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="LinkedIn:" /></span>
-                  <span className="text-yellow-400"><TypingText text="linkedin.com/in/akhmadu17in" /></span>
+                  <span className="text-cyan-400"><TypingText text="LinkedIn:" delay={500} /></span>
+                  <span className="text-yellow-400"><TypingText text="linkedin.com/in/akhmadu17in" delay={600} /></span>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="Telegram:" /></span>
-                  <span className="text-yellow-400"><TypingText text="@akhmadull_in" /></span>
+                  <span className="text-cyan-400"><TypingText text="Telegram:" delay={800} /></span>
+                  <span className="text-yellow-400"><TypingText text="@akhmadull_in" delay={900} /></span>
                 </div>
               </div>
-              <div className="text-green-400 mt-4">
+              {/* <div className="text-green-400 mt-4">
                 <span className="text-cyan-400">$</span> _
-              </div>
+              </div> */}
             </div>
           </div>
         );
