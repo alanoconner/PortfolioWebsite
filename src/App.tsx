@@ -171,9 +171,13 @@ function App(): React.JSX.Element {
           pointerEvents: 'none',
         }}
       />
+
+      <div className="fixed top-4 left-4 bg-black/80 text-white p-3  font-mono text-sm z-10">
+        [ AKHMADULLIN AZAMAT / SOFTWARE ENGINEER ]
+      </div>
       
       {/* System Status */}
-      <div className="fixed top-4 right-4 bg-black/80 text-cyan-400 p-3 rounded border border-gray-600 font-mono text-sm z-10">
+      <div className="fixed top-4 right-4 bg-black/80 text-white p-3  font-mono text-sm z-10">
         [ SYSTEM ONLINE ]
       </div>
       
@@ -189,6 +193,7 @@ function App(): React.JSX.Element {
               icon={box.icon}
               onClick={() => handleBoxClick(box.id)}
               isActive={activeSection === box.id}
+              windowClosed={!!activeSection}
             />
           ))}
         </div>
@@ -198,17 +203,9 @@ function App(): React.JSX.Element {
       <ContentSection 
         type={activeSection as 'intro' | 'experience' | 'projects' | 'contact'} 
         isActive={!!activeSection} 
+        onClose={() => setActiveSection(null)}
       />
-      
-      {/* Close button when content is open */}
-      {activeSection && (
-        <button
-          onClick={() => setActiveSection(null)}
-          className="fixed top-4 left-4 bg-red-600 hover:bg-red-700 text-white p-2 rounded font-mono text-sm z-30 transition-colors"
-        >
-          [ CLOSE ]
-        </button>
-      )}
+            
     </div>
   )
 }

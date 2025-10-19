@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export type Box3DProps = {
   title?: string;
   icon?: React.ReactNode;
-  onClick?: () => void;
+  onClick: () => void;
   isActive?: boolean;
   size?: number; // edge length in px (default 128)
   autoSpin?: boolean;        
   spinSeed?: number;         
   spinDurationMs?: number; 
+  windowClosed: boolean;
 };
 
 const faceStyleBase: React.CSSProperties = {
@@ -34,6 +35,7 @@ const Box3D: React.FC<Box3DProps> = ({
   autoSpin = false,
   spinSeed,
   spinDurationMs = 10000,
+  windowClosed
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -41,6 +43,9 @@ const Box3D: React.FC<Box3DProps> = ({
   const jitter = ((seed * 9301 + 49297) % 233280) / 233280; // 0..1
   const dur = Math.round(spinDurationMs * (1.2 + 0.4 * jitter)); // 0.8x..1.2x
   const delay = Math.round(-(jitter * dur)); // отрицательная задержка — разные фазы
+  const selectedLength = 128
+  const [selected01, setSelected01] = useState<string[]>(Array(selectedLength).fill(" "));
+
 
   const s = size; // cube edge
   const h = s / 2; // half edge
@@ -55,11 +60,37 @@ const Box3D: React.FC<Box3DProps> = ({
     left: (exp: boolean) => `rotateY(90deg) translateZ(${exp ? -h : 0}px)`,
   } as const;
 
+
+  useEffect(() => {
+    if (!expanded) return;
+    const interval = setInterval(() => {
+      const newItem = Math.round(Math.random()).toString();
+      setSelected01(prev => {
+        // Remove the oldest element (index 0), add new one at end
+        const updated = [...prev.slice(1), newItem];
+        return updated;
+      });
+    }, 50);
+  
+    return () => clearInterval(interval);
+  }, [expanded]);
+
+  useEffect(() => {
+    if (windowClosed === false) {setExpanded(false)}
+  }, [windowClosed])
+
+
   return (
     <div
       onMouseEnter={() => setExpanded(true)}
-      onMouseLeave={() => setExpanded(false)}
-      onClick={onClick}
+      onMouseLeave={() => {
+        isActive? setExpanded(true) : setExpanded(false)
+      }}
+      onClick={() => {
+        setExpanded(true)
+        onClick()
+      }
+      }
       className="relative inline-block cursor-pointer select-none"
       style={{
         perspective: 1000,
@@ -91,15 +122,17 @@ const Box3D: React.FC<Box3DProps> = ({
           }}
         >
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
-            {title && (
+            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {(title && !isActive) && (
               <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
                 {title}
               </div>
             )}
           </div>
           {isActive && (
-            <div className="pointer-events-none absolute inset-0 rounded-sm bg-blue-400/20 animate-pulse" />
+            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
+              {selected01}
+            </div>
           )}
         </div>
 
@@ -112,13 +145,18 @@ const Box3D: React.FC<Box3DProps> = ({
           }}
         >
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
-            {title && (
+            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {(title && !isActive) && (
               <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
                 {title}
               </div>
             )}
           </div>
+          {isActive && (
+            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
+              {selected01}
+            </div>
+          )}
         </div>
 
         <div
@@ -130,13 +168,18 @@ const Box3D: React.FC<Box3DProps> = ({
           }}
         >
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
-            {title && (
+            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {(title && !isActive) && (
               <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
                 {title}
               </div>
             )}
           </div>
+          {isActive && (
+            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
+              {selected01}
+            </div>
+          )}
         </div>
 
         {/* The complementary faces fade in and move to -Z, -Y, -X */}
@@ -150,13 +193,18 @@ const Box3D: React.FC<Box3DProps> = ({
           }}
         >
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
-            {title && (
+            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {(title && !isActive) && (
               <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
                 {title}
               </div>
             )}
           </div>
+          {isActive && (
+            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
+              {selected01}
+            </div>
+          )}
         </div>
 
         <div
@@ -169,13 +217,18 @@ const Box3D: React.FC<Box3DProps> = ({
           }}
         >
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
-            {title && (
+            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {(title && !isActive) && (
               <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
                 {title}
               </div>
             )}
           </div>
+          {isActive && (
+            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
+              {selected01}
+            </div>
+          )}
         </div>
 
         <div
@@ -188,13 +241,18 @@ const Box3D: React.FC<Box3DProps> = ({
           }}
         >
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>
-            {title && (
+            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {(title && !isActive) && (
               <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
                 {title}
               </div>
             )}
           </div>
+          {isActive && (
+            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
+              {selected01}
+            </div>
+          )}
         </div>
 
         {/* outline rings */}
