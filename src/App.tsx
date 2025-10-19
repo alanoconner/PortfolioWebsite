@@ -196,6 +196,17 @@ function App(): React.JSX.Element {
       <div className="fixed top-2 right-2 sm:top-4 sm:right-4 bg-black/80 text-white p-2 sm:p-3 font-mono text-xs sm:text-sm z-10">
         {isMobile ? "[ SOFTWARE ENGINEER ]" : "[ SYSTEM ONLINE ]" } 
       </div>
+
+      {/* Language */}
+      <div className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 bg-black/80 text-white p-2 sm:p-3 font-mono text-md sm:text-sm z-10 w-28">
+        <div className='flex w-full items-center justify-between'>
+          <a href="https://akhmadull.in" className={`${location.pathname === "https://akhmadull.in" ? "underline" : ""}`}>EN</a><span>/</span>
+          <a href="https://ru.akhmadull.in" className={`${location.pathname.includes("ru.") ? "underline" : ""}`}>RU</a><span>/</span>
+          <a href="https://jp.akhmadull.in" className={`${location.pathname.includes("jp.") ? "underline" : ""}`}>JP</a>
+        </div>
+        
+
+      </div>
       
       {/* 3D Boxes Container - Centered */}
       <div className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-full px-4 ${isMobile && "h-full px-10 py-8"}`}>
