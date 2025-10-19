@@ -160,7 +160,7 @@ function App(): React.JSX.Element {
   return (
     <div className="min-h-screen relative bg-black">
       {/* ASCII Background Canvas */}
-      {/* <canvas 
+      <canvas 
         ref={canvasRef} 
         className="fixed top-0 left-0 w-full h-full pointer-events-none"
         style={{
@@ -170,7 +170,7 @@ function App(): React.JSX.Element {
           zIndex: 1,
           pointerEvents: 'none',
         }}
-      /> */}
+      />
 
       <div className="fixed top-4 left-4 bg-black/80 text-white p-3  font-mono text-sm z-10">
         [ AKHMADULLIN AZAMAT / SOFTWARE ENGINEER ]
