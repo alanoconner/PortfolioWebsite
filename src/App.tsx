@@ -68,6 +68,7 @@ function App(): React.JSX.Element {
   
   // Navigation state
   const [activeSection, setActiveSection] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
   
   // Box data
   const boxes = [
@@ -80,6 +81,18 @@ function App(): React.JSX.Element {
   const handleBoxClick = (boxId: string) => {
     setActiveSection(activeSection === boxId ? null : boxId)
   }
+
+  // Check for mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -106,17 +119,19 @@ function App(): React.JSX.Element {
       ctx.fillStyle = '#000'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
       
-      // Set font for ASCII characters
-      ctx.font = '12px Courier New, monospace'
-      ctx.fillStyle = '#ffffff95'
+      // Adjust character size based on screen size for better mobile performance
+      const isMobileScreen = window.innerWidth < 640
+      const charWidth = isMobileScreen ? 10 : 8
+      const charHeight = isMobileScreen ? 15 : 12
       
-      const charWidth = 8
-      const charHeight = 12
+      // Set font for ASCII characters based on screen size
+      ctx.font = isMobileScreen ? '15px Courier New, monospace' : '12px Courier New, monospace'
+      ctx.fillStyle = '#ffffff95'
       const cols = Math.floor(canvas.width / charWidth)
       const rows = Math.floor(canvas.height / charHeight)
       
-      const time = Date.now() * 0.0005 // Slower animation
-      const scale = 0.02 // Noise scale
+      const time = Date.now() * (isMobileScreen ? 0.0003 : 0.0005) // Even slower animation on mobile
+      const scale = isMobileScreen ? 0.03 : 0.02 // Larger scale on mobile for fewer calculations
       
       // Create Perlin noise patterns
       for (let x = 0; x < cols; x++) {
@@ -172,18 +187,19 @@ function App(): React.JSX.Element {
         }}
       />
 
-      <div className="fixed top-4 left-4 bg-black/80 text-white p-3  font-mono text-sm z-10">
-        [ AKHMADULLIN AZAMAT / SOFTWARE ENGINEER ]
+      <div className="fixed top-2 left-2 sm:top-4 sm:left-4 bg-black/80 text-white p-2 sm:p-3 font-mono text-xs sm:text-sm z-10 max-w-[calc(100vw-4rem)] sm:max-w-none">
+        <span className="hidden sm:inline">[ AKHMADULLIN AZAMAT / SOFTWARE ENGINEER ]</span>
+        <span className="sm:hidden">[ AKHMADULLIN AZAMAT ]</span>
       </div>
       
       {/* System Status */}
-      <div className="fixed top-4 right-4 bg-black/80 text-white p-3  font-mono text-sm z-10">
-        [ SYSTEM ONLINE ]
+      <div className="fixed top-2 right-2 sm:top-4 sm:right-4 bg-black/80 text-white p-2 sm:p-3 font-mono text-xs sm:text-sm z-10">
+        {isMobile ? "[ SOFTWARE ENGINEER ]" : "[ SYSTEM ONLINE ]" } 
       </div>
       
       {/* 3D Boxes Container - Centered */}
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-full">
-        <div className="flex space-x-8 w-full justify-around ">
+      <div className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-full px-4 ${isMobile && "h-full px-10 py-8"}`}>
+        <div className={`flex flex-wrap gap-4 sm:gap-8 w-full justify-around items-center ${isMobile && "h-full justify-between gap-10"} `}>
           {boxes.map((box, index) => (
             <Box3D
               key={box.id}
@@ -194,6 +210,7 @@ function App(): React.JSX.Element {
               onClick={() => handleBoxClick(box.id)}
               isActive={activeSection === box.id}
               windowClosed={!!activeSection}
+              size={isMobile ? 100 : 160}
             />
           ))}
         </div>

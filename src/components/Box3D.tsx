@@ -167,9 +167,9 @@ const Box3D: React.FC<Box3DProps> = ({
         >
           
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
             {(title && !isActive) && (
-              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
                 {title}
               </div>
             )}
@@ -199,9 +199,9 @@ const Box3D: React.FC<Box3DProps> = ({
         >
           
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
             {(title && !isActive) && (
-              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
                 {title}
               </div>
             )}
@@ -230,9 +230,9 @@ const Box3D: React.FC<Box3DProps> = ({
         >
           
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
             {(title && !isActive) && (
-              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
                 {title}
               </div>
             )}
@@ -262,9 +262,9 @@ const Box3D: React.FC<Box3DProps> = ({
         >
           
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
             {(title && !isActive) && (
-              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
                 {title}
               </div>
             )}
@@ -294,9 +294,9 @@ const Box3D: React.FC<Box3DProps> = ({
         >
           
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
             {(title && !isActive) && (
-              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
                 {title}
               </div>
             )}
@@ -326,9 +326,9 @@ const Box3D: React.FC<Box3DProps> = ({
         >
           
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
+            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
             {(title && !isActive) && (
-              <div className="mt-1 text-[11px] font-mono text-gray-600 opacity-90">
+              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
                 {title}
               </div>
             )}

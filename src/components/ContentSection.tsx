@@ -148,10 +148,10 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
       case 'intro':
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-mono text-white mb-4">[ Info ]</h2>
+            <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ Info ]</h2>
             <button
               onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-0 right-0 hover:text-black px-4 py-2 text-xl"
+              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
             >
               X
             </button>
@@ -184,10 +184,10 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
       case 'experience':
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-mono text-white mb-4">[ EXPERIENCE LOG ]</h2>
+            <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ EXPERIENCE LOG ]</h2>
             <button
               onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-0 right-0 hover:text-black px-4 py-2 text-xl"
+              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
             >
               X
             </button>
@@ -220,10 +220,10 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
       case 'projects':
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-mono text-white mb-4">[ PROJECT REPOSITORY ]</h2>
+            <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ PROJECT REPOSITORY ]</h2>
             <button
               onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-0 right-0 hover:text-black px-4 py-2 text-xl"
+              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
             >
               X
             </button>
@@ -231,14 +231,14 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
               <div className="text-green-400 mb-4">
                 <span className="text-cyan-400">$</span> ls projects/
               </div>
-              <div className="text-white space-y-3 text-nowrap ">
+              <div className="text-white space-y-3">
                 {
                   projects.map((pr, index) => {
                     const baseDelay = index * 800; // 2 seconds between each project
                     return (
-                      <div key={index} className="flex items-center space-x-4 p-2 hover:bg-gray-800 rounded gap-5">
-                        <span className="text-yellow-400"><TypingText text={pr.name} delay={baseDelay} /></span>
-                        <span className="text-gray-400"><TypingText text={pr.stack} delay={baseDelay + pr.name.length * 5 + 50} /></span>
+                      <div key={index} className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-2 hover:bg-gray-800 rounded gap-2 sm:gap-5">
+                        <span className="text-yellow-400 text-sm sm:text-base"><TypingText text={pr.name} delay={baseDelay} /></span>
+                        <span className="text-gray-400 text-xs sm:text-sm break-words"><TypingText text={pr.stack} delay={baseDelay + pr.name.length * 5 + 50} /></span>
                       </div>
                     )
                   })
@@ -254,10 +254,10 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
       case 'contact':
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-mono text-white mb-4">[ CONTACT ]</h2>
+            <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ CONTACT ]</h2>
             <button
               onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-0 right-0 hover:text-black px-4 py-2 text-xl"
+              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
             >
               X
             </button>
@@ -266,21 +266,21 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
                 <span className="text-cyan-400">$</span> contact --help
               </div>
               <div className="text-white space-y-3">
-                <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="Email:" delay={0} /></span>
-                  <span className="text-yellow-400"><TypingText text="akhmadullin01@gmail.com" delay={100} /></span>
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
+                  <span className="text-cyan-400 text-sm"><TypingText text="Email:" delay={0} /></span>
+                  <span className="text-yellow-400 text-sm break-words"><TypingText text="akhmadullin01@gmail.com" delay={100} /></span>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="GitHub:" delay={300} /></span>
-                  <span className="text-yellow-400"><TypingText text="github.com/alanoconner" delay={400} /></span>
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
+                  <span className="text-cyan-400 text-sm"><TypingText text="GitHub:" delay={300} /></span>
+                  <span className="text-yellow-400 text-sm break-words"><TypingText text="github.com/alanoconner" delay={400} /></span>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="LinkedIn:" delay={500} /></span>
-                  <span className="text-yellow-400"><TypingText text="linkedin.com/in/akhmadu17in" delay={600} /></span>
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
+                  <span className="text-cyan-400 text-sm"><TypingText text="LinkedIn:" delay={500} /></span>
+                  <span className="text-yellow-400 text-sm break-words"><TypingText text="linkedin.com/in/akhmadu17in" delay={600} /></span>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="Telegram:" delay={800} /></span>
-                  <span className="text-yellow-400"><TypingText text="@akhmadull_in" delay={900} /></span>
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
+                  <span className="text-cyan-400 text-sm"><TypingText text="Telegram:" delay={800} /></span>
+                  <span className="text-yellow-400 text-sm break-words"><TypingText text="@akhmadull_in" delay={900} /></span>
                 </div>
               </div>
               {/* <div className="text-green-400 mt-4">
@@ -297,10 +297,10 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
 
   return (
     <div 
-      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-fit px-4`}
+      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-full max-w-sm sm:max-w-2xl lg:max-w-4xl px-4 max-h-[90vh] overflow-y-auto`}
     >
       <div
-        className="bg-black/90 backdrop-blur-sm rounded border-none p-4"
+        className="bg-black/90 backdrop-blur-sm rounded border-none p-4 w-full"
       >
         {showContent && renderContent()}
       </div>
