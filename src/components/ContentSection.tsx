@@ -33,7 +33,87 @@ const useTypingAnimation = (text: string, speed: number = 50) => {
 const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
   const introText = "Full-stack Software Engineer with 2+ years of experience building production-ready web applications for B2B and healthcare domains. Proficient in Kotlin, Vue.js, and CI/CD automation. Trilingual (English, Japanese, Russian) and skilled at delivering reliable solutions across the full development cycle."
+  const introEduText = `Kyushu Institute of Information Sciences,
+                        Japan — Data Science
+                        April 2021 - March 2025`
+  const experiences = [
+    {
+      id:0,
+      position:"Software Engineer",
+      timeAndPlace: "Small Step Co., Ltd • May 2025 - Present",
+      responsibilities: `Led development of internal and client -facing web
+        systems from concept to production, ensuring
+        scalability and maintainability.
+        Designed backend architecture using Kotlin and
+        PostgreSQL, supporting high-volume transactional
+        data for operational processes.
+        Automated deployment with GitHub Actions, Docker,
+        and Linux -based CI/CD, reducing manual overhead
+        and enabling weekly releases.
+        Built responsive UI components in Vue.js, improving
+        usability across multiple business apps.
+        Enhanced system reliability through comprehensive
+        unit testing and continuous integration.`,
+        color: "cyan-400"
+    },
 
+    {
+      id:1,
+      position:"Web Developer",
+      timeAndPlace: "Small Step Co., Ltd • April 2023 - May 2025",
+      responsibilities: `Delivered a web-based digital signature and
+        document exchange platform that eliminated
+        inefficient manual workflows between partner
+        companies.
+        Implemented task tracking and order management
+        tools for B2B clients, increasing operational
+        transparency and coordination.
+        Developed a hospital equipment tracking system
+        used in surgical units, reducing search time and
+        improving inventory control.
+        Maintained and deployed multi-environment
+        applications using Flask, Vue/Nuxt.js, and MySQL,
+        applying strong full-stack and DevOps skills.`,
+        color: "green-400"
+    },
+    {
+      id:2,
+      position:"Intern",
+      timeAndPlace: "Line Fukuoka • July 2022",
+      responsibilities: `Conducted research on UX pain points and proposed
+        process automation strategies to reduce user support
+        volume.`,
+      color: "yellow-400"
+    }
+  ]
+
+  const projects = [
+    {
+      id:0,
+      name:"Edaha | B2B Platform",
+      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL",
+    },
+    {
+      id:1,
+      name:"SST-S | Hospital Equipment Tracking System",
+      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL",
+    },
+    {
+      id:3,
+      name:"AI Outfit Recommender",
+      stack: "VueJS, JavaScript, Python, Flask, TensorFlow",
+    },
+    {
+      id:4,
+      name:"Zinnia | Product Management System for Factories",
+      stack: "React, TypeScript, Python, Flask, PostgreSQL",
+    },
+    {
+      id:5,
+      name:"IShift | Nurse Shift Scheduling System",
+      stack: "React, TypeScript, Python, Django, PostgreSQL",
+    },
+  ]
 
   useEffect(() => {
     if (isActive) {
@@ -71,6 +151,11 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
               <div className="text-white space-y-2">
                 <p><TypingText text={introText} /></p>
               </div>
+              <div className="text-white space-y-2">
+                <br /><span className="text-cyan-400">$</span><span className="text-green-400"> cat education.txt</span><br />
+                <span>---------------------------------------------</span><br />
+                <p><TypingText text={introEduText} /></p>
+              </div>
               <div className="text-green-400 mt-4">
                 <span className="text-cyan-400">$</span> _
               </div>
@@ -81,7 +166,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
       case 'experience':
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-mono text-cyan-400 mb-4">[ EXPERIENCE LOG ]</h2>
+            <h2 className="text-2xl font-mono text-white mb-4">[ EXPERIENCE LOG ]</h2>
             <button
               onClick={()=> onClose()}
               className="bg-black text-white hover:bg-white border border-white fixed top-0 right-0 hover:text-black px-4 py-2 text-xl"
@@ -93,21 +178,18 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
                 <span className="text-cyan-400">$</span> cat experience.log
               </div>
               <div className="text-white space-y-3">
-                <div className="border-l-2 border-cyan-400 pl-4">
-                  <div className="text-cyan-400"><TypingText text="Senior Developer" /></div>
-                  <div className="text-gray-400"><TypingText text="Company Name • 2022-Present" /></div>
-                  <div className="text-gray-300 text-xs mt-1"><TypingText text="Leading development of scalable web applications" /></div>
-                </div>
-                <div className="border-l-2 border-green-400 pl-4">
-                  <div className="text-green-400"><TypingText text="Full Stack Developer" /></div>
-                  <div className="text-gray-400"><TypingText text="Previous Company • 2020-2022" /></div>
-                  <div className="text-gray-300 text-xs mt-1"><TypingText text="Built and maintained multiple client projects" /></div>
-                </div>
-                <div className="border-l-2 border-yellow-400 pl-4">
-                  <div className="text-yellow-400"><TypingText text="Frontend Developer" /></div>
-                  <div className="text-gray-400"><TypingText text="Startup • 2019-2020" /></div>
-                  <div className="text-gray-300 text-xs mt-1"><TypingText text="Developed user interfaces and interactive experiences" /></div>
-                </div>
+              
+                {
+                  experiences.map((exp, index) => {
+                    return (
+                      <div key={index} className={`border-l-2 border-${exp.color} pl-4`}>
+                        <div className={"text-"+exp.color}><TypingText text={exp.position} /></div>
+                        <div className="text-gray-400"><TypingText text={exp.timeAndPlace} /></div>
+                        <div className="text-gray-300 text-xs mt-1"><TypingText text={exp.responsibilities} /></div>
+                      </div>
+                    )
+                  })
+                }
               </div>
               <div className="text-green-400 mt-4">
                 <span className="text-cyan-400">$</span> _
@@ -119,38 +201,26 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
       case 'projects':
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-mono text-cyan-400 mb-4">[ PROJECT REPOSITORY ]</h2>
+            <h2 className="text-2xl font-mono text-white mb-4">[ PROJECT REPOSITORY ]</h2>
             <button
               onClick={()=> onClose()}
               className="bg-black text-white hover:bg-white border border-white fixed top-0 right-0 hover:text-black px-4 py-2 text-xl"
             >
               X
             </button>
-            <div className="bg-gray-900 p-6 rounded border border-gray-600 font-mono text-sm">
+            <div className="bg-black p-6  font-mono text-sm">
               <div className="text-green-400 mb-4">
-                <span className="text-cyan-400">$</span> ls -la projects/
+                <span className="text-cyan-400">$</span> ls projects/
               </div>
-              <div className="text-white space-y-3">
-                <div className="flex items-center space-x-4 p-2 hover:bg-gray-800 rounded">
-                  <span className="text-cyan-400"><TypingText text="drwxr-xr-x" /></span>
-                  <span className="text-yellow-400"><TypingText text="E-Commerce Platform" /></span>
-                  <span className="text-gray-400"><TypingText text="React, Node.js, MongoDB" /></span>
-                </div>
-                <div className="flex items-center space-x-4 p-2 hover:bg-gray-800 rounded">
-                  <span className="text-cyan-400"><TypingText text="drwxr-xr-x" /></span>
-                  <span className="text-yellow-400"><TypingText text="Task Management App" /></span>
-                  <span className="text-gray-400"><TypingText text="Vue.js, Express, PostgreSQL" /></span>
-                </div>
-                <div className="flex items-center space-x-4 p-2 hover:bg-gray-800 rounded">
-                  <span className="text-cyan-400"><TypingText text="drwxr-xr-x" /></span>
-                  <span className="text-yellow-400"><TypingText text="Real-time Chat" /></span>
-                  <span className="text-gray-400"><TypingText text="Socket.io, React, Redis" /></span>
-                </div>
-                <div className="flex items-center space-x-4 p-2 hover:bg-gray-800 rounded">
-                  <span className="text-cyan-400"><TypingText text="drwxr-xr-x" /></span>
-                  <span className="text-yellow-400"><TypingText text="Portfolio Website" /></span>
-                  <span className="text-gray-400"><TypingText text="Next.js, TypeScript, Tailwind" /></span>
-                </div>
+              <div className="text-white space-y-3 text-nowrap ">
+                {
+                  projects.map((pr, index) => (
+                    <div key={index} className="flex items-center space-x-4 p-2 hover:bg-gray-800 rounded justify-between">
+                      <span className="text-yellow-400"><TypingText text={pr.name} /></span>
+                      <span className="text-gray-400"><TypingText text={pr.stack} /></span>
+                    </div>
+                  ))
+                }
               </div>
               <div className="text-green-400 mt-4">
                 <span className="text-cyan-400">$</span> _
@@ -162,33 +232,33 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
       case 'contact':
         return (
           <div className="space-y-4">
-            <h2 className="text-2xl font-mono text-cyan-400 mb-4">[ CONTACT TERMINAL ]</h2>
+            <h2 className="text-2xl font-mono text-white mb-4">[ CONTACT ]</h2>
             <button
               onClick={()=> onClose()}
               className="bg-black text-white hover:bg-white border border-white fixed top-0 right-0 hover:text-black px-4 py-2 text-xl"
             >
               X
             </button>
-            <div className="bg-gray-900 p-6 rounded border border-gray-600 font-mono text-sm">
+            <div className="bg-black p-6 font-mono text-sm">
               <div className="text-green-400 mb-4">
                 <span className="text-cyan-400">$</span> contact --help
               </div>
               <div className="text-white space-y-3">
                 <div className="flex items-center space-x-4">
                   <span className="text-cyan-400"><TypingText text="Email:" /></span>
-                  <span className="text-yellow-400"><TypingText text="your.email@example.com" /></span>
+                  <span className="text-yellow-400"><TypingText text="akhmadullin01@gmail.com" /></span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <span className="text-cyan-400"><TypingText text="GitHub:" /></span>
-                  <span className="text-yellow-400"><TypingText text="github.com/yourusername" /></span>
+                  <span className="text-yellow-400"><TypingText text="github.com/alanoconner" /></span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <span className="text-cyan-400"><TypingText text="LinkedIn:" /></span>
-                  <span className="text-yellow-400"><TypingText text="linkedin.com/in/yourprofile" /></span>
+                  <span className="text-yellow-400"><TypingText text="linkedin.com/in/akhmadu17in" /></span>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <span className="text-cyan-400"><TypingText text="Twitter:" /></span>
-                  <span className="text-yellow-400"><TypingText text="@yourhandle" /></span>
+                  <span className="text-cyan-400"><TypingText text="Telegram:" /></span>
+                  <span className="text-yellow-400"><TypingText text="@akhmadull_in" /></span>
                 </div>
               </div>
               <div className="text-green-400 mt-4">
@@ -205,11 +275,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
 
   return (
     <div 
-      className={`fixed top-40 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 max-w-2xl w-full px-4 transition-all duration-500 ease-out ${
-        isActive 
-          ? 'translate-y-0 opacity-100' 
-          : 'translate-y-full opacity-0'
-      }`}
+      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-fit px-4`}
     >
       <div
         className="bg-black/90 backdrop-blur-sm rounded border-none p-4"
