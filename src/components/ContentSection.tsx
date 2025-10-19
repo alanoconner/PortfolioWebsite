@@ -44,57 +44,78 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
 
 const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
   const [showContent, setShowContent] = useState(false);
-  const introText = "Full-stack Software Engineer with 2+ years of experience building production-ready web applications for B2B and healthcare domains. Proficient in Kotlin, Vue.js, and CI/CD automation. Trilingual (English, Japanese, Russian) and skilled at delivering reliable solutions across the full development cycle."
-  const introEduText = `Kyushu Institute of Information Sciences,
-                        Japan — Data Science
-                        April 2021 - March 2025`
+  const introText = `Full Stack разработчик с более чем 2 годами опыта
+                      создания веб-приложений для B2B-сегмента и
+                      сферы здравоохранения. Владею Kotlin, Python,
+                      TypeScript и инструментами CI/CD. Свободно
+                      говорю на английском, японском и русском языках.
+                      Обладаю полным циклом навыков — от
+                      проектирования до запуска и поддержки
+                      приложений.`
+  const introEduText = `Институт информационных наук Кюсю,
+                        Япония — Data Science (Бакалавриат)
+                        Апрель 2021 - Март 2025`
   const experiences = [
     {
       id:0,
       position:"Software Engineer",
-      timeAndPlace: "Small Step Co., Ltd • May 2025 - Present",
-      responsibilities: `Led development of internal and client -facing web
-        systems from concept to production, ensuring
-        scalability and maintainability.
-        Designed backend architecture using Kotlin and
-        PostgreSQL, supporting high-volume transactional
-        data for operational processes.
-        Automated deployment with GitHub Actions, Docker,
-        and Linux -based CI/CD, reducing manual overhead
-        and enabling weekly releases.
-        Built responsive UI components in Vue.js, improving
-        usability across multiple business apps.
-        Enhanced system reliability through comprehensive
-        unit testing and continuous integration.`,
+      timeAndPlace: "Small Step Co., Ltd • Май 2025 - Настоящее время",
+      responsibilities: `Руководил разработкой внутренних и
+                          клиентских веб-систем — от идеи до
+                          развёртывания в продакшн, с акцентом на
+                          масштабируемость и стабильность.
+                          
+                          Спроектировал архитектуру backend на Kotlin
+                          + PostgreSQL для работы с
+                          высоконагруженными транзакционными
+                          данными.
+                          
+                          Автоматизировал процесс деплоя с
+                          использованием GitHub Actions, Docker и Linux
+                          CI/CD, что сократило ручную работу и
+                          обеспечило еженедельные релизы.
+                          
+                          Разрабатывал UI-компоненты на React,
+                          улучшив пользовательский опыт в нескольких
+                          приложениях.
+                          
+                          Повысил надёжность системы через покрытие
+                          unit -тестами и`,
       color: 'cyan-400'
     },
 
     {
       id:1,
       position:"Web Developer",
-      timeAndPlace: "Small Step Co., Ltd • April 2023 - May 2025",
-      responsibilities: `Delivered a web-based digital signature and
-        document exchange platform that eliminated
-        inefficient manual workflows between partner
-        companies.
-        Implemented task tracking and order management
-        tools for B2B clients, increasing operational
-        transparency and coordination.
-        Developed a hospital equipment tracking system
-        used in surgical units, reducing search time and
-        improving inventory control.
-        Maintained and deployed multi-environment
-        applications using Flask, Vue/Nuxt.js, and MySQL,
-        applying strong full-stack and DevOps skills.`,
+      timeAndPlace: "Small Step Co., Ltd • Апрель 2023 - Май 2025",
+      responsibilities: `Создал веб-платформу для обмена
+                          документами и цифровой подписи, которая
+                          заменила неэффективные ручные процессы
+                          между партнёрами.
+                          
+                          Реализовал инструменты для отслеживания
+                          задач и управления заказами, повысив
+                          прозрачность операций у B2B-клиентов.
+                          
+                          Разрабатывал систему учёта медицинского
+                          оборудования, используемую в хирургических
+                          отделениях, что сократило время на поиск и
+                          улучшило контроль.
+                          
+                          Поддерживал и развёртывал приложения в
+                          нескольких окружениях, используя Flask,
+                          Vue/Nuxt.js и MySQL, применяя full-stack и
+                          DevOps-подходы.`,
       color: 'green-400'
     },
     {
       id:2,
-      position:"Intern",
-      timeAndPlace: "Line Fukuoka • July 2022",
-      responsibilities: `Conducted research on UX pain points and proposed
-        process automation strategies to reduce user support
-        volume.`,
+      position:"Стажер",
+      timeAndPlace: "Line Fukuoka • Июль 2022",
+      responsibilities: `Проводил исследование проблем UX и
+                          предложил стратегии автоматизации
+                          поддержки пользователей для снижения
+                          нагрузки на техподдержку.`,
       color: "yellow-400"
     }
   ]
@@ -102,12 +123,12 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
   const projects = [
     {
       id:0,
-      name:"Edaha | B2B Platform",
+      name:"Edaha | B2B Платформа",
       stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
     },
     {
       id:1,
-      name:"SST-S | Hospital Equipment Tracking System",
+      name:"SST-S | Система Отслеживания Больничного Оборудования",
       stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
     },
     {
@@ -117,12 +138,12 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
     },
     {
       id:4,
-      name:"Zinnia | Product Management System for Factories",
+      name:"Zinnia | Система Контроля Продукцией",
       stack: "React, TypeScript, Python, Flask, PostgreSQL, Docker",
     },
     {
       id:5,
-      name:"IShift | Nurse Shift Scheduling System",
+      name:"IShift | Система Планирования Смен Персонала",
       stack: "React, TypeScript, Python, Django, PostgreSQL, Docker",
     },
   ]
