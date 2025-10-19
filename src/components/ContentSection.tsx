@@ -65,7 +65,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
         usability across multiple business apps.
         Enhanced system reliability through comprehensive
         unit testing and continuous integration.`,
-        color: "cyan-400"
+      color: 'cyan-400'
     },
 
     {
@@ -85,7 +85,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
         Maintained and deployed multi-environment
         applications using Flask, Vue/Nuxt.js, and MySQL,
         applying strong full-stack and DevOps skills.`,
-        color: "green-400"
+      color: 'green-400'
     },
     {
       id:2,
