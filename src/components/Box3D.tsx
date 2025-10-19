@@ -45,6 +45,7 @@ const Box3D: React.FC<Box3DProps> = ({
   const delay = Math.round(-(jitter * dur)); // отрицательная задержка — разные фазы
   const selectedLength = 128
   const [selected01, setSelected01] = useState<string[]>(Array(selectedLength).fill(" "));
+  const glitchOn = useRandomGlitch();          // или включай по hover/active
 
 
   const s = size; // cube edge
@@ -59,6 +60,24 @@ const Box3D: React.FC<Box3DProps> = ({
     right: (exp: boolean) => `rotateY(90deg) translateZ(${exp ? h : 0}px)`,
     left: (exp: boolean) => `rotateY(90deg) translateZ(${exp ? -h : 0}px)`,
   } as const;
+
+    // Add this function to create random glitch per face
+  const getFaceGlitchClass = (faceIndex: number) => {
+    if (!glitchOn) return '';
+    
+    // Only glitch 2-3 random faces at a time
+    const shouldGlitch = Math.random() > 0.4; // 60% chance per face
+    return shouldGlitch ? 'glitch-face' : '';
+  };
+
+  // Then use it for each face:
+  const FaceClass1 = `relative overflow-visible will-change-transform ${ (glitchOn && !expanded ) ? getFaceGlitchClass(0) : ''}`;
+  // const FaceClass2 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(1)}`;
+  // const FaceClass3 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(2)}`;
+  // const FaceClass4 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(3)}`;
+  // const FaceClass5 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(4)}`;
+  // const FaceClass6 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(5)}`;
+
 
 
   useEffect(() => {
@@ -79,6 +98,29 @@ const Box3D: React.FC<Box3DProps> = ({
     if (windowClosed === false) {setExpanded(false)}
   }, [windowClosed])
 
+  function useRandomGlitch(opts?: { minDelayMs?: number; maxDelayMs?: number; burstMs?: number }) {
+    const { minDelayMs = 800, maxDelayMs = 5200, burstMs = 100 } = opts || {};
+    const [on, setOn] = React.useState(false);
+  
+    React.useEffect(() => {
+      let timeout: number;
+      let interval: number;
+  
+      const schedule = () => {
+        const delay = Math.floor(Math.random() * (maxDelayMs - minDelayMs)) + minDelayMs;
+        interval = window.setTimeout(() => {
+          setOn(true);
+          timeout = window.setTimeout(() => setOn(false), Math.floor(burstMs * (0.8 + Math.random() * 0.6)));
+          schedule();
+        }, delay);
+      };
+  
+      schedule();
+      return () => { clearTimeout(timeout); clearTimeout(interval); };
+    }, [minDelayMs, maxDelayMs, burstMs]);
+  
+    return on;
+  }
 
   return (
     <div
@@ -114,6 +156,8 @@ const Box3D: React.FC<Box3DProps> = ({
       >
         {/* Three central planes (initial). They move out to +Z, +Y, +X */}
         <div
+          className={FaceClass1}
+
           style={{
             ...faceStyleBase,
             width: s,
@@ -121,6 +165,7 @@ const Box3D: React.FC<Box3DProps> = ({
             transform: T.top(expanded),
           }}
         >
+          
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
             {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
             {(title && !isActive) && (
@@ -134,9 +179,17 @@ const Box3D: React.FC<Box3DProps> = ({
               {selected01}
             </div>
           )}
+
+          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
+            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
+            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
+            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
+          </div>
         </div>
 
         <div
+          // className={FaceClass2}
+
           style={{
             ...faceStyleBase,
             width: s,
@@ -144,6 +197,7 @@ const Box3D: React.FC<Box3DProps> = ({
             transform: T.front(expanded),
           }}
         >
+          
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
             {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
             {(title && !isActive) && (
@@ -157,9 +211,16 @@ const Box3D: React.FC<Box3DProps> = ({
               {selected01}
             </div>
           )}
+          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
+            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
+            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
+            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
+          </div>
         </div>
 
         <div
+          // className={FaceClass3}
+
           style={{
             ...faceStyleBase,
             width: s,
@@ -167,6 +228,7 @@ const Box3D: React.FC<Box3DProps> = ({
             transform: T.right(expanded),
           }}
         >
+          
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
             {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
             {(title && !isActive) && (
@@ -180,10 +242,16 @@ const Box3D: React.FC<Box3DProps> = ({
               {selected01}
             </div>
           )}
+          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
+            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
+            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
+            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
+          </div>
         </div>
 
         {/* The complementary faces fade in and move to -Z, -Y, -X */}
         <div
+          // className={FaceClass4}
           style={{
             ...faceStyleBase,
             width: s,
@@ -192,6 +260,7 @@ const Box3D: React.FC<Box3DProps> = ({
             opacity: expanded ? 0.96 : 0,
           }}
         >
+          
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
             {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
             {(title && !isActive) && (
@@ -205,9 +274,16 @@ const Box3D: React.FC<Box3DProps> = ({
               {selected01}
             </div>
           )}
+          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
+            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
+            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
+            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
+          </div>
         </div>
 
         <div
+          // className={FaceClass5}
+
           style={{
             ...faceStyleBase,
             width: s,
@@ -216,6 +292,7 @@ const Box3D: React.FC<Box3DProps> = ({
             opacity: expanded ? 0.96 : 0,
           }}
         >
+          
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
             {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
             {(title && !isActive) && (
@@ -229,9 +306,16 @@ const Box3D: React.FC<Box3DProps> = ({
               {selected01}
             </div>
           )}
+          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
+            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
+            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
+            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
+          </div>
         </div>
 
         <div
+          // className={FaceClass6}
+
           style={{
             ...faceStyleBase,
             width: s,
@@ -240,6 +324,7 @@ const Box3D: React.FC<Box3DProps> = ({
             opacity: expanded ? 0.96 : 0,
           }}
         >
+          
           <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
             {!isActive && <div className="text-4xl leading-none drop-shadow-sm">{icon}</div>}
             {(title && !isActive) && (
@@ -253,6 +338,11 @@ const Box3D: React.FC<Box3DProps> = ({
               {selected01}
             </div>
           )}
+          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
+            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
+            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
+            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
+          </div>
         </div>
 
         {/* outline rings */}
@@ -265,6 +355,119 @@ const Box3D: React.FC<Box3DProps> = ({
             to   { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
         }`}
       </style>
+
+      {/* GLITCHES */}
+      <style>{`
+        /* базовая тряска, короткими рывками */
+        @keyframes glitch-jitter {
+          0%   { transform: translate3d(0, 0, 0); }
+          15%  { transform: translate3d(-5px, 2px, 0); }
+          30%  { transform: translate3d(2px, -5px, 0); }
+          45%  { transform: translate3d(-1px, -1px, 0); }
+          60%  { transform: translate3d(5px, 2px, 0); }
+          75%  { transform: translate3d(-2px, 5px, 0); }
+          90%  { transform: translate3d(1px, -1px, 0); }
+          100% { transform: translate3d(0, 0, 0); }
+        }
+
+        /* бегущая полоса (как CRT scanline) */
+        @keyframes glitch-scan {
+          0%   { transform: translate3d(0, -100%, 0); opacity: 0; }
+          10%  { opacity: 1; }
+          90%  { opacity: 1; }
+          100% { transform: translate3d(0, 100%, 0); opacity: 0; }
+        }
+
+        /* лёгкое мерцание прозрачности линий */
+        @keyframes glitch-flicker {
+          0%, 100% { opacity: 0; }
+          20%, 80% { opacity: 1; }
+          40%, 60% { opacity: 0.3; }
+        }
+
+        /* RGB split эффект */
+        @keyframes glitch-rgb-split {
+          0%   { transform: translate3d(0, 0, 0); }
+          20%  { transform: translate3d(-10px, 7px, 0); }
+          40%  { transform: translate3d(10px, -7px, 0); }
+          60%  { transform: translate3d(-10px, -7px, 0); }
+          80%  { transform: translate3d(7px, 10px, 0); }
+          100% { transform: translate3d(0, 0, 0); }
+        }
+
+        /* когда включён глитч */
+        .glitch-face {
+          animation: glitch-jitter 300ms ease-in-out infinite;
+        }
+
+        /* RGB split по краям: имитируем смещение цветовых каналов box-shadow'ами */
+          .glitch-face .glitch-rgb {
+            animation: glitch-rgb-split 300ms ease-in-out infinite;
+          }
+          .glitch-face .glitch-rgb::before,
+          .glitch-face .glitch-rgb::after {
+            content: '';
+            position: absolute; 
+            inset: 0;
+            border-radius: 2px;
+            pointer-events: none;
+          }
+          /* красно-циановые смещения */
+          .glitch-face .glitch-rgb::before {
+            box-shadow:
+              5px -5px 0 rgba(255, 0, 0, 0.8),
+            -5px  5px 0 rgba(0, 255, 255, 0.8),
+              7px -7px 0 rgba(255, 0, 0, 0.4),
+            -7px  7px 0 rgba(0, 255, 255, 0.4);
+          }
+          .glitch-face .glitch-rgb::after {
+            box-shadow:
+            -5px  5px 0 rgba(0, 255, 0, 0.7),
+              5px -5px 0 rgba(255, 0, 255, 0.7),
+            -7px  7px 0 rgba(0, 255, 0, 0.35),
+              7px -7px 0 rgba(255, 0, 255, 0.35);
+          }
+
+          /* белые контуры/полосы вокруг грани */
+          .glitch-face .glitch-outline {
+            mix-blend-mode: screen;
+            opacity: 1;
+          }
+          .glitch-face .glitch-outline::before,
+          .glitch-face .glitch-outline::after {
+            content: '';
+            position: absolute; 
+            inset: -10px;
+            border: 2px solid rgba(255,255,255,0.6);
+            border-radius: 4px;
+            pointer-events: none;
+          }
+          /* второй контур — толще и с прерывистым clip-path для "обрывков" линий */
+          .glitch-face .glitch-outline::after {
+            inset: -8px;
+            border: 2px solid rgba(255,255,255,0.4);
+            clip-path: polygon(
+              0% 10%, 15% 10%, 15% 0%, 85% 0%, 85% 15%, 100% 15%,
+              100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%
+            );
+            animation: glitch-flicker 300ms ease-in-out infinite;
+          }
+
+          /* scanlines сверху вниз во время вспышки */
+          .glitch-face .glitch-scanlines {
+            background: repeating-linear-gradient(
+              to bottom,
+              rgba(255,255,255,0.15) 0px,
+              rgba(255,255,255,0.15) 2px,
+              transparent 4px,
+              transparent 6px
+            );
+            opacity: 1;
+            will-change: transform, opacity;
+            animation: glitch-scan 20ms ease-in-out infinite;
+          }
+        }
+      `}</style>
     </div>
   );
 };
