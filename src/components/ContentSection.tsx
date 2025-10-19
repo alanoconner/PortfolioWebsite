@@ -4,6 +4,7 @@ interface ContentSectionProps {
   type: 'intro' | 'experience' | 'projects' | 'contact';
   isActive: boolean;
   onClose: () => void
+  isMobile: boolean
 }
 
 // Custom hook for typing animation
@@ -41,7 +42,7 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
   return displayedText;
 };
 
-const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
+const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
   const [showContent, setShowContent] = useState(false);
   const introText = "Full-stack Software Engineer with 2+ years of experience building production-ready web applications for B2B and healthcare domains. Proficient in Kotlin, Vue.js, and CI/CD automation. Trilingual (English, Japanese, Russian) and skilled at delivering reliable solutions across the full development cycle."
   const introEduText = `Kyushu Institute of Information Sciences,
@@ -102,12 +103,12 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
     {
       id:0,
       name:"Edaha | B2B Platform",
-      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL",
+      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
     },
     {
       id:1,
       name:"SST-S | Hospital Equipment Tracking System",
-      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL",
+      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
     },
     {
       id:3,
@@ -117,12 +118,12 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
     {
       id:4,
       name:"Zinnia | Product Management System for Factories",
-      stack: "React, TypeScript, Python, Flask, PostgreSQL",
+      stack: "React, TypeScript, Python, Flask, PostgreSQL, Docker",
     },
     {
       id:5,
       name:"IShift | Nurse Shift Scheduling System",
-      stack: "React, TypeScript, Python, Django, PostgreSQL",
+      stack: "React, TypeScript, Python, Django, PostgreSQL, Docker",
     },
   ]
 
@@ -140,7 +141,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
 
   const renderContent = () => {
     const TypingText = ({ text, className = "", delay = 0 }: { text: string; className?: string; delay?: number }) => {
-      const displayedText = useTypingAnimation(text, 5, delay);
+      const displayedText = useTypingAnimation(text, 4, delay);
       return <span className={className}>{displayedText}</span>;
     };
 
@@ -297,7 +298,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
 
   return (
     <div 
-      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-full max-w-sm sm:max-w-2xl lg:max-w-4xl px-4 max-h-[90vh] overflow-y-auto`}
+      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20  ${isMobile? "max-w-sm sm:max-w-2xl lg:max-w-4xl px-4 max-h-[90vh] overflow-y-auto w-full " : "w-fit"}`}
     >
       <div
         className="bg-black/90 backdrop-blur-sm rounded border-none p-4 w-full"

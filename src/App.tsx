@@ -221,6 +221,7 @@ function App(): React.JSX.Element {
         type={activeSection as 'intro' | 'experience' | 'projects' | 'contact'} 
         isActive={!!activeSection} 
         onClose={() => setActiveSection(null)}
+        isMobile={isMobile}
       />
             
     </div>
