@@ -138,7 +138,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
     },
     {
       id:4,
-      name:"Zinnia | Система Контроля Продукцией",
+      name:"Zinnia | Система Контроля Продукции",
       stack: "React, TypeScript, Python, Flask, PostgreSQL, Docker",
     },
     {
