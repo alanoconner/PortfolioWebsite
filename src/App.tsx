@@ -198,11 +198,21 @@ function App(): React.JSX.Element {
       </div>
 
       {/* Language */}
-      <div className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 bg-black/80 text-white p-2 sm:p-3 font-mono text-xs sm:text-sm z-10 w-28">
+      <div className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 bg-black/80 text-white p-2 sm:p-3 font-mono text-xs sm:text-sm z-100 w-28">
         <div className='flex w-full items-center justify-between'>
-          <a href="https://akhmadull.in"><span className={`${window.location.host === "akhmadull.in" ? "underline underline-offset-4" : ""}`}>EN</span></a><span>/</span>
-          <a href="https://ru.akhmadull.in" className={`${window.location.host.includes("ru.") ? "underline underline-offset-4" : ""}`}>RU</a><span>/</span>
-          <a href="https://jp.akhmadull.in" className={`${window.location.host.includes("jp.") ? "underline underline-offset-4" : ""}`}>JP</a>
+          <a href="https://akhmadull.in">
+            <span className={`${window.location.host === "akhmadull.in" ? "underline underline-offset-4" : ""}`}>
+              EN
+            </span>
+          </a>
+          <span>/</span>
+          <a href="https://ru.akhmadull.in" className={`${window.location.host.includes("ru.") ? "underline underline-offset-4" : ""}`}>
+            RU
+          </a>
+          <span>/</span>
+          <a href="https://jp.akhmadull.in" className={`${window.location.host.includes("jp.") ? "underline underline-offset-4" : ""}`}>
+            JP
+          </a>
         </div>
         
 
@@ -222,6 +232,7 @@ function App(): React.JSX.Element {
               isActive={activeSection === box.id}
               windowClosed={!!activeSection}
               size={isMobile ? 100 : 160}
+              isMobile={isMobile}
             />
           ))}
         </div>
