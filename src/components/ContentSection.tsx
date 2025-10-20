@@ -44,85 +44,59 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
 
 const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
   const [showContent, setShowContent] = useState(false);
-  const introText = "Full-stack Software Engineer with 2+ years of experience building production-ready web applications for B2B and healthcare domains. Proficient in Kotlin, Vue.js, and CI/CD automation. Trilingual (English, Japanese, Russian) and skilled at delivering reliable solutions across the full development cycle."
-  const introEduText = `Kyushu Institute of Information Sciences,
-                        Japan — Data Science
-                        April 2021 - March 2025`
+  const introText = "B2Bおよび医療分野向けの本番環境対応Webアプリケーションを2年以上にわたり開発してきたフルスタックソフトウェアエンジニア。Kotlin、Vue.js、CI/CD自動化に精通。英語・日本語・ロシア語の3言語を操り、開発の全工程において信頼性の高いソリューションを提供。";
+  const introEduText = `九州情報大学　経営情報学部　情報ネットワーク学科,
+                        データサイエンス
+                        2021年4月 - 2025年3月`
   const experiences = [
     {
-      id:0,
-      position:"Software Engineer",
-      timeAndPlace: "Small Step Co., Ltd • May 2025 - Present",
-      responsibilities: `Led development of internal and client -facing web
-        systems from concept to production, ensuring
-        scalability and maintainability.
-        Designed backend architecture using Kotlin and
-        PostgreSQL, supporting high-volume transactional
-        data for operational processes.
-        Automated deployment with GitHub Actions, Docker,
-        and Linux -based CI/CD, reducing manual overhead
-        and enabling weekly releases.
-        Built responsive UI components in Vue.js, improving
-        usability across multiple business apps.
-        Enhanced system reliability through comprehensive
-        unit testing and continuous integration.`,
-      color: 'cyan-400'
+      "id": 0,
+      "position": "ソフトウェアエンジニア",
+      "timeAndPlace": "株式会社スモールステップ • 2025年5月〜現在",
+      "responsibilities": "社内およびクライアント向けのWebシステムの開発を、企画から本番運用まで主導し、スケーラビリティと保守性を確保。\nKotlinとPostgreSQLを用いてバックエンドアーキテクチャを設計し、業務プロセス向けの大量トランザクションデータを処理。\nGitHub Actions、Docker、LinuxベースのCI/CDを使用してデプロイを自動化し、手作業を削減、週次リリースを実現。\nVue.jsでレスポンシブなUIコンポーネントを構築し、複数の業務アプリでユーザビリティを改善。\n包括的な単体テストと継続的インテグレーションにより、システムの信頼性を向上。",
+      "color": "cyan-400"
     },
 
     {
-      id:1,
-      position:"Web Developer",
-      timeAndPlace: "Small Step Co., Ltd • April 2023 - May 2025",
-      responsibilities: `Delivered a web-based digital signature and
-        document exchange platform that eliminated
-        inefficient manual workflows between partner
-        companies.
-        Implemented task tracking and order management
-        tools for B2B clients, increasing operational
-        transparency and coordination.
-        Developed a hospital equipment tracking system
-        used in surgical units, reducing search time and
-        improving inventory control.
-        Maintained and deployed multi-environment
-        applications using Flask, Vue/Nuxt.js, and MySQL,
-        applying strong full-stack and DevOps skills.`,
-      color: 'green-400'
+      "id": 1,
+      "position": "Webデベロッパー",
+      "timeAndPlace": "株式会社スモールステップ • 2023年4月〜2025年5月",
+      "responsibilities": "パートナー企業間の非効率的な手作業を排除する、Webベースの電子署名・文書交換プラットフォームを開発。\nB2Bクライアント向けにタスク追跡および注文管理ツールを実装し、業務の透明性と連携を向上。\n手術室で使用される医療機器追跡システムを開発し、検索時間を短縮し在庫管理を改善。\nFlask、Vue/Nuxt.js、MySQLを用いて複数環境のアプリケーションを保守・デプロイし、フルスタックおよびDevOpsのスキルを発揮。",
+      "color": "green-400"
     },
     {
-      id:2,
-      position:"Intern",
-      timeAndPlace: "Line Fukuoka • July 2022",
-      responsibilities: `Conducted research on UX pain points and proposed
-        process automation strategies to reduce user support
-        volume.`,
-      color: "yellow-400"
+      "id": 2,
+      "position": "インターン",
+      "timeAndPlace": "LINE福岡 • 2022年7月",
+      "responsibilities": "UXにおける課題点を調査し、ユーザーサポート件数を削減するためのプロセス自動化戦略を提案。",
+      "color": "yellow-400"
     }
   ]
 
   const projects = [
     {
       id:0,
-      name:"Edaha | B2B Platform",
+      name:"Edaha | B2B プラットフォーム",
       stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
     },
     {
       id:1,
-      name:"SST-S | Hospital Equipment Tracking System",
+      name:"SST-S | 滅菌管理システム",
       stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
     },
     {
       id:3,
-      name:"AI Outfit Recommender",
+      name:"AI 洋服　スタイリング　アプリケーション",
       stack: "VueJS, JavaScript, Python, Flask, TensorFlow",
     },
     {
       id:4,
-      name:"Zinnia | Product Management System for Factories",
+      name:"Zinnia | 工場商品管理システム",
       stack: "React, TypeScript, Python, Flask, PostgreSQL, Docker",
     },
     {
       id:5,
-      name:"IShift | Nurse Shift Scheduling System",
+      name:"IShift | 看護師スケジューリングシステム",
       stack: "React, TypeScript, Python, Django, PostgreSQL, Docker",
     },
   ]
