@@ -10,6 +10,7 @@ export type Box3DProps = {
   spinSeed?: number;         
   spinDurationMs?: number; 
   windowClosed: boolean;
+  isMobile: boolean;
 };
 
 const faceStyleBase: React.CSSProperties = {
@@ -35,7 +36,8 @@ const Box3D: React.FC<Box3DProps> = ({
   autoSpin = false,
   spinSeed,
   spinDurationMs = 10000,
-  windowClosed
+  windowClosed,
+  isMobile
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -78,6 +80,22 @@ const Box3D: React.FC<Box3DProps> = ({
   // const FaceClass5 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(4)}`;
   // const FaceClass6 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(5)}`;
 
+  const randomExpansionMobile = (isMobile: boolean, setExpanded: (v: boolean) => void) => {
+    if (!isMobile) return;
+  
+    // Randomly trigger after a delay
+    const delay = Math.floor(Math.random() * 5000) + 2000; // 2–7s
+    const timer = setTimeout(() => {
+      const prob = Math.random(); // 0–1
+      if (prob < 0.9) {
+        setExpanded(true);
+  
+        setTimeout(() => setExpanded(false), 3000);
+      }
+    }, delay);
+  
+    return () => clearTimeout(timer);
+  };
 
 
   useEffect(() => {
@@ -97,6 +115,11 @@ const Box3D: React.FC<Box3DProps> = ({
   useEffect(() => {
     if (windowClosed === false) {setExpanded(false)}
   }, [windowClosed])
+
+  useEffect(() => {
+    const cleanup = randomExpansionMobile(isMobile, setExpanded);
+    return cleanup;
+  });
 
   function useRandomGlitch(opts?: { minDelayMs?: number; maxDelayMs?: number; burstMs?: number }) {
     const { minDelayMs = 800, maxDelayMs = 5200, burstMs = 100 } = opts || {};
