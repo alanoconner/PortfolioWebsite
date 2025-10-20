@@ -42,7 +42,7 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
   return displayedText;
 };
 
-const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
+const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
   const [showContent, setShowContent] = useState(false);
   const introText = "B2Bおよび医療分野向けの本番環境対応Webアプリケーションを2年以上にわたり開発してきたフルスタックソフトウェアエンジニア。Kotlin、Vue.js、CI/CD自動化に精通。英語・日本語・ロシア語の3言語を操り、開発の全工程において信頼性の高いソリューションを提供。";
   const introEduText = `九州情報大学　経営情報学部　情報ネットワーク学科,
@@ -283,4 +283,4 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
   );
 };
 
-export default ContentSection;
+export default ContentSectionJP;

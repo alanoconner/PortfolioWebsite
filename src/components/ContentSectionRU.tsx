@@ -42,7 +42,7 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
   return displayedText;
 };
 
-const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
+const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
   const [showContent, setShowContent] = useState(false);
   const introText = `Full Stack разработчик с более чем 2 годами опыта
                       создания веб-приложений для B2B-сегмента и
@@ -330,4 +330,4 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
   );
 };
 
-export default ContentSection;
+export default ContentSectionRU;

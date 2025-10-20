@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Box3D from './components/Box3D'
 import ContentSection from './components/ContentSection'
-
+import ContentSectionRU from './components/ContentSectionRU'
+import ContentSectionJP from './components/ContentSectionJP'
 // Simple Perlin noise implementation
 class PerlinNoise {
   private p: number[]
@@ -69,6 +70,7 @@ function App(): React.JSX.Element {
   // Navigation state
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [lang, SetLang] = useState<string>("en")
   
   // Box data
   const boxes = [
@@ -200,22 +202,20 @@ function App(): React.JSX.Element {
       {/* Language */}
       <div className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 bg-black/80 text-white p-2 sm:p-3 font-mono text-xs sm:text-sm z-100 w-28">
         <div className='flex w-full items-center justify-between'>
-          <a href="https://akhmadull.in">
-            <span className={`${window.location.host === "akhmadull.in" ? "underline underline-offset-4" : ""}`}>
+          <button className="border-none shadow-none w-fit" onClick={()=>{SetLang("en")}}>
+            <span className={`${lang === "en" ? "underline underline-offset-4" : ""}`}>
               EN
             </span>
-          </a>
+          </button>
           <span>/</span>
-          <a href="https://ru.akhmadull.in" className={`${window.location.host.includes("ru.") ? "underline underline-offset-4" : ""}`}>
+          <button onClick={()=>{SetLang("ru")}} className={`border-none shadow-none w-fit ${lang === "ru" ? "underline underline-offset-4" : ""}`}>
             RU
-          </a>
+          </button>
           <span>/</span>
-          <a href="https://jp.akhmadull.in" className={`${window.location.host.includes("jp.") ? "underline underline-offset-4" : ""}`}>
+          <button onClick={()=>{SetLang("jp")}} className={`border-none shadow-none w-fit ${lang==="jp" ? "underline underline-offset-4" : ""}`}>
             JP
-          </a>
+          </button>
         </div>
-        
-
       </div>
       
       {/* 3D Boxes Container - Centered */}
@@ -239,12 +239,24 @@ function App(): React.JSX.Element {
       </div>
       
       {/* Content Section */}
-      <ContentSection 
+      {lang==="en" && <ContentSection 
         type={activeSection as 'intro' | 'experience' | 'projects' | 'contact'} 
         isActive={!!activeSection} 
         onClose={() => setActiveSection(null)}
         isMobile={isMobile}
-      />
+      />}
+      {lang==="ru" && <ContentSectionRU 
+        type={activeSection as 'intro' | 'experience' | 'projects' | 'contact'} 
+        isActive={!!activeSection} 
+        onClose={() => setActiveSection(null)}
+        isMobile={isMobile}
+      />}
+      {lang==="jp" && <ContentSectionJP 
+        type={activeSection as 'intro' | 'experience' | 'projects' | 'contact'} 
+        isActive={!!activeSection} 
+        onClose={() => setActiveSection(null)}
+        isMobile={isMobile}
+      />}
             
     </div>
   )
