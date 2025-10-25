@@ -1,333 +1,219 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react'
+import { accentStyles, LanguageKey, portfolioContent } from '../content/portfolioContent'
+import { useTypingAnimation } from '../hooks/useTypingAnimation'
 
-interface ContentSectionProps {
-  type: 'intro' | 'experience' | 'projects' | 'contact';
-  isActive: boolean;
+type SectionType = 'intro' | 'experience' | 'projects' | 'contact'
+
+type ContentSectionProps = {
+  type: SectionType | null
+  isActive: boolean
   onClose: () => void
   isMobile: boolean
+  language: LanguageKey
 }
 
-// Custom hook for typing animation
-const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
+type TypingTextProps = {
+  text: string
+  delay?: number
+  className?: string
+  speed?: number
+}
+
+const TypingText: React.FC<TypingTextProps> = ({ text, delay = 0, className, speed = 4 }) => {
+  const animatedText = useTypingAnimation(text, speed, delay)
+  return <span className={className}>{animatedText}</span>
+}
+
+const ContentSection: React.FC<ContentSectionProps> = ({
+  type,
+  isActive,
+  onClose,
+  isMobile,
+  language,
+}) => {
+  const [showContent, setShowContent] = useState(false)
 
   useEffect(() => {
-    // Start the animation after the delay
-    const startTimer = setTimeout(() => {
-      setHasStarted(true);
-    }, delay);
-
-    return () => clearTimeout(startTimer);
-  }, [delay]);
-
-  useEffect(() => {
-    if (hasStarted && currentIndex < text.length) {
-      const timeout = setTimeout(() => {
-        setDisplayedText(prev => prev + text[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }, speed);
-      return () => clearTimeout(timeout);
+    if (!isActive) {
+      setShowContent(false)
+      return
     }
-  }, [currentIndex, text, speed, hasStarted]);
 
-  // Reset when text changes
-  useEffect(() => {
-    setDisplayedText('');
-    setCurrentIndex(0);
-    setHasStarted(false);
-  }, [text]);
+    const timer = window.setTimeout(() => setShowContent(true), 300)
+    return () => window.clearTimeout(timer)
+  }, [isActive])
 
-  return displayedText;
-};
+  if (!isActive || !type) {
+    return null
+  }
 
-const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
-  const [showContent, setShowContent] = useState(false);
-  const introText = `Full Stack разработчик с более чем 2 годами опыта
-                      создания веб-приложений для B2B-сегмента и
-                      сферы здравоохранения. Владею Kotlin, Python,
-                      TypeScript и инструментами CI/CD. Свободно
-                      говорю на английском, японском и русском языках.
-                      Обладаю полным циклом навыков — от
-                      проектирования до запуска и поддержки
-                      приложений.`
-  const introEduText = `Институт информационных наук Кюсю,
-                        Япония — Data Science (Бакалавриат)
-                        Апрель 2021 - Март 2025`
-  const experiences = [
-    {
-      id:0,
-      position:"Software Engineer",
-      timeAndPlace: "Small Step Co., Ltd • Май 2025 - Настоящее время",
-      responsibilities: `Руководил разработкой внутренних и
-                          клиентских веб-систем — от идеи до
-                          развёртывания в продакшн, с акцентом на
-                          масштабируемость и стабильность.
-                          
-                          Спроектировал архитектуру backend на Kotlin
-                          + PostgreSQL для работы с
-                          высоконагруженными транзакционными
-                          данными.
-                          
-                          Автоматизировал процесс деплоя с
-                          использованием GitHub Actions, Docker и Linux
-                          CI/CD, что сократило ручную работу и
-                          обеспечило еженедельные релизы.
-                          
-                          Разрабатывал UI-компоненты на React,
-                          улучшив пользовательский опыт в нескольких
-                          приложениях.
-                          
-                          Повысил надёжность системы через покрытие
-                          unit -тестами и`,
-      color: 'cyan-400'
-    },
+  const content = portfolioContent[language]
+  const baseClasses =
+    'bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30'
 
-    {
-      id:1,
-      position:"Web Developer",
-      timeAndPlace: "Small Step Co., Ltd • Апрель 2023 - Май 2025",
-      responsibilities: `Создал веб-платформу для обмена
-                          документами и цифровой подписи, которая
-                          заменила неэффективные ручные процессы
-                          между партнёрами.
-                          
-                          Реализовал инструменты для отслеживания
-                          задач и управления заказами, повысив
-                          прозрачность операций у B2B-клиентов.
-                          
-                          Разрабатывал систему учёта медицинского
-                          оборудования, используемую в хирургических
-                          отделениях, что сократило время на поиск и
-                          улучшило контроль.
-                          
-                          Поддерживал и развёртывал приложения в
-                          нескольких окружениях, используя Flask,
-                          Vue/Nuxt.js и MySQL, применяя full-stack и
-                          DevOps-подходы.`,
-      color: 'green-400'
-    },
-    {
-      id:2,
-      position:"Стажер",
-      timeAndPlace: "Line Fukuoka • Июль 2022",
-      responsibilities: `Проводил исследование проблем UX и
-                          предложил стратегии автоматизации
-                          поддержки пользователей для снижения
-                          нагрузки на техподдержку.`,
-      color: "yellow-400"
-    }
-  ]
-
-  const projects = [
-    {
-      id:0,
-      name:"Edaha | B2B Платформа",
-      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
-    },
-    {
-      id:1,
-      name:"SST-S | Система Отслеживания Больничного Оборудования",
-      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
-    },
-    {
-      id:3,
-      name:"AI Outfit Recommender",
-      stack: "VueJS, JavaScript, Python, Flask, TensorFlow",
-    },
-    {
-      id:4,
-      name:"Zinnia | Система Контроля Продукции",
-      stack: "React, TypeScript, Python, Flask, PostgreSQL, Docker",
-    },
-    {
-      id:5,
-      name:"IShift | Система Планирования Смен Персонала",
-      stack: "React, TypeScript, Python, Django, PostgreSQL, Docker",
-    },
-  ]
-
-  useEffect(() => {
-    if (isActive) {
-      // Delay showing content to allow slide animation to start
-      const timer = setTimeout(() => setShowContent(true), 300);
-      return () => clearTimeout(timer);
-    } else {
-      setShowContent(false);
-    }
-  }, [isActive]);
-
-  if (!isActive) return null;
-
-  const renderContent = () => {
-    const TypingText = ({ text, className = "", delay = 0 }: { text: string; className?: string; delay?: number }) => {
-      const displayedText = useTypingAnimation(text, 4, delay);
-      return <span className={className}>{displayedText}</span>;
-    };
-
-    switch (type) {
-      case 'intro':
-        return (
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ Info ]</h2>
-            <button
-              onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
-            >
-              X
-            </button>
-            <div className="bg-black p-6 border-none font-mono text-sm">
-              <div className="text-green-400 mb-4">
-                <span className="text-cyan-400">$</span> whoami
-              </div>
-              <div className="text-white space-y-2">
-                <p><TypingText text={introText} delay={0} /></p>
-              </div>
-              <div className="text-white space-y-2">
-                <br />
-                <span className="text-cyan-400">
-                  <TypingText text='$' delay={introText.length * 5 + 500} ></TypingText> 
-                </span>
-                <span className="text-green-400" > 
-                  <TypingText text=' cat education.txt' delay={introText.length * 5 + 700} ></TypingText> 
-                </span>
-                <br />
-                <span> <TypingText text='' delay={introText.length * 5 + 1000} /></span><br />
-                <p><TypingText text={introEduText} delay={introText.length * 5 + 1300} /></p>
-              </div>
-              {/* <div className="text-green-400 mt-4">
-                <span className="text-cyan-400">$</span> _
-              </div> */}
-            </div>
+  const renderIntro = () => {
+    const commandDelay = content.intro.about.length * 5 + 500
+    return (
+      <div className="space-y-4">
+        <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ Info ]</h2>
+        <button onClick={onClose} className={baseClasses}>
+          X
+        </button>
+        <div className="bg-black p-6 font-mono text-sm">
+          <div className="text-green-400 mb-4">
+            <span className="text-cyan-400">$</span> whoami
           </div>
-        );
-      
-      case 'experience':
-        return (
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ EXPERIENCE LOG ]</h2>
-            <button
-              onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
-            >
-              X
-            </button>
-            <div className="bg-black p-6  font-mono text-sm">
-              <div className="text-green-400 mb-4">
-                <span className="text-cyan-400">$</span> cat experience.log
-              </div>
-              <div className="text-white space-y-3">
-              
-                {
-                  experiences.map((exp, index) => {
-                    const baseDelay = index * 4500; // 3 seconds between each experience
-                    return (
-                      <div key={index} className={`border-l-2 border-${exp.color} pl-4`}>
-                        <div className={"text-"+exp.color}><TypingText text={exp.position} delay={baseDelay} /></div>
-                        <div className="text-gray-400"><TypingText text={exp.timeAndPlace} delay={baseDelay + exp.position.length * 5 + 200} /></div>
-                        <div className="text-gray-300 text-xs mt-1"><TypingText text={exp.responsibilities} delay={baseDelay + exp.position.length * 5 + exp.timeAndPlace.length * 5 + 400} /></div>
-                      </div>
-                    )
-                  })
-                }
-              </div>
-              {/* <div className="text-green-400 mt-4">
-                <span className="text-cyan-400">$</span> _
-              </div> */}
-            </div>
+          <div className="text-white space-y-2">
+            <p>
+              <TypingText text={content.intro.about} delay={0} />
+            </p>
           </div>
-        );
-      
-      case 'projects':
-        return (
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ PROJECT REPOSITORY ]</h2>
-            <button
-              onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
-            >
-              X
-            </button>
-            <div className="bg-black p-6  font-mono text-sm">
-              <div className="text-green-400 mb-4">
-                <span className="text-cyan-400">$</span> ls projects/
-              </div>
-              <div className="text-white space-y-3">
-                {
-                  projects.map((pr, index) => {
-                    const baseDelay = index * 800; // 2 seconds between each project
-                    return (
-                      <div key={index} className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-2 hover:bg-gray-800 rounded gap-2 sm:gap-5">
-                        <span className="text-yellow-400 text-sm sm:text-base"><TypingText text={pr.name} delay={baseDelay} /></span>
-                        <span className="text-gray-400 text-xs sm:text-sm break-words"><TypingText text={pr.stack} delay={baseDelay + pr.name.length * 5 + 50} /></span>
-                      </div>
-                    )
-                  })
-                }
-              </div>
-              {/* <div className="text-green-400 mt-4">
-                <span className="text-cyan-400">$</span> _
-              </div> */}
-            </div>
+          <div className="text-white space-y-2">
+            <br />
+            <span className="text-cyan-400">
+              <TypingText text="$" delay={commandDelay} />
+            </span>
+            <span className="text-green-400">
+              <TypingText text=" cat education.txt" delay={commandDelay + 200} />
+            </span>
+            <br />
+            <span>
+              <TypingText text="" delay={commandDelay + 400} />
+            </span>
+            <br />
+            <p className="whitespace-pre-line">
+              <TypingText text={content.intro.education} delay={commandDelay + 700} />
+            </p>
           </div>
-        );
-      
-      case 'contact':
-        return (
-          <div className="space-y-4">
-            <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ CONTACT ]</h2>
-            <button
-              onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
-            >
-              X
-            </button>
-            <div className="bg-black p-6 font-mono text-sm">
-              <div className="text-green-400 mb-4">
-                <span className="text-cyan-400">$</span> contact --help
-              </div>
-              <div className="text-white space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
-                  <span className="text-cyan-400 text-sm"><TypingText text="Email:" delay={0} /></span>
-                  <span className="text-yellow-400 text-sm break-words"><TypingText text="akhmadullin01@gmail.com" delay={100} /></span>
+        </div>
+      </div>
+    )
+  }
+
+  const renderExperience = () => (
+    <div className="space-y-4">
+      <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ EXPERIENCE LOG ]</h2>
+      <button onClick={onClose} className={baseClasses}>
+        X
+      </button>
+      <div className="bg-black p-6 font-mono text-sm">
+        <div className="text-green-400 mb-4">
+          <span className="text-cyan-400">$</span> cat experience.log
+        </div>
+        <div className="text-white space-y-3">
+          {content.experiences.map((experience, index) => {
+            const timing = index * 4200
+            const accent = accentStyles[experience.accent]
+
+            return (
+              <div key={experience.role} className={`border-l-2 pl-4 ${accent.border}`}>
+                <div className={`${accent.text} font-semibold`}>
+                  <TypingText text={experience.role} delay={timing} />
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
-                  <span className="text-cyan-400 text-sm"><TypingText text="GitHub:" delay={300} /></span>
-                  <span className="text-yellow-400 text-sm break-words"><TypingText text="github.com/alanoconner" delay={400} /></span>
+                <div className="text-gray-400">
+                  <TypingText
+                    text={experience.timeline}
+                    delay={timing + experience.role.length * 5 + 200}
+                  />
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
-                  <span className="text-cyan-400 text-sm"><TypingText text="LinkedIn:" delay={500} /></span>
-                  <span className="text-yellow-400 text-sm break-words"><TypingText text="linkedin.com/in/akhmadu17in" delay={600} /></span>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
-                  <span className="text-cyan-400 text-sm"><TypingText text="Telegram:" delay={800} /></span>
-                  <span className="text-yellow-400 text-sm break-words"><TypingText text="@akhmadull_in" delay={900} /></span>
+                <div className="text-gray-300 text-xs mt-1 whitespace-pre-line">
+                  <TypingText
+                    text={experience.details}
+                    delay={
+                      timing + experience.role.length * 5 + experience.timeline.length * 5 + 400
+                    }
+                  />
                 </div>
               </div>
-              {/* <div className="text-green-400 mt-4">
-                <span className="text-cyan-400">$</span> _
-              </div> */}
-            </div>
-          </div>
-        );
-      
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div 
-      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20  ${isMobile? "max-w-sm sm:max-w-2xl lg:max-w-4xl px-4 max-h-[90vh] overflow-y-auto w-full " : "w-fit"}`}
-    >
-      <div
-        className="bg-black/90 backdrop-blur-sm rounded border-none p-4 w-full"
-      >
-        {showContent && renderContent()}
+            )
+          })}
+        </div>
       </div>
     </div>
-  );
-};
+  )
 
-export default ContentSection;
+  const renderProjects = () => (
+    <div className="space-y-4">
+      <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ PROJECT REPOSITORY ]</h2>
+      <button onClick={onClose} className={baseClasses}>
+        X
+      </button>
+      <div className="bg-black p-6 font-mono text-sm">
+        <div className="text-green-400 mb-4">
+          <span className="text-cyan-400">$</span> ls projects/
+        </div>
+        <div className="text-white space-y-3">
+          {content.projects.map((project, index) => {
+            const baseDelay = index * 800
+            return (
+              <div
+                key={project.name}
+                className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-2 hover:bg-gray-800 rounded gap-2 sm:gap-5"
+              >
+                <span className="text-yellow-400 text-sm sm:text-base">
+                  <TypingText text={project.name} delay={baseDelay} />
+                </span>
+                <span className="text-gray-400 text-xs sm:text-sm break-words">
+                  <TypingText
+                    text={project.stack}
+                    delay={baseDelay + project.name.length * 5 + 50}
+                  />
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderContact = () => (
+    <div className="space-y-4">
+      <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ CONTACT ]</h2>
+      <button onClick={onClose} className={baseClasses}>
+        X
+      </button>
+      <div className="bg-black p-6 font-mono text-sm">
+        <div className="text-green-400 mb-4">
+          <span className="text-cyan-400">$</span> contact --help
+        </div>
+        <div className="text-white space-y-3">
+          {content.contact.map((entry, index) => (
+            <div
+              key={entry.label}
+              className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4"
+            >
+              <span className="text-cyan-400 text-sm">
+                <TypingText text={entry.label} delay={index * 200} />
+              </span>
+              <span className="text-yellow-400 text-sm break-words">
+                <TypingText text={entry.value} delay={index * 200 + 100} />
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
+  const contentBySection: Record<SectionType, JSX.Element> = {
+    intro: renderIntro(),
+    experience: renderExperience(),
+    projects: renderProjects(),
+    contact: renderContact(),
+  }
+
+  return (
+    <div
+      className={`fixed top-1/2 left-1/2 z-20 w-full max-w-[90vw] transform -translate-x-1/2 -translate-y-1/2 ${
+        isMobile ? 'max-w-sm px-4 max-h-[90vh] overflow-y-auto' : 'sm:max-w-2xl lg:max-w-4xl'
+      }`}
+    >
+      <div className="bg-black/90 backdrop-blur-sm rounded border-none p-4 w-full">
+        {showContent && contentBySection[type]}
+      </div>
+    </div>
+  )
+}
+
+export default ContentSection

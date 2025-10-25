@@ -1,16 +1,58 @@
-# React + Vite
+# Portfolio Terminal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Immersive single-page portfolio that combines a rotating 3D interface, terminal-inspired overlays, and animated ASCII background noise. Visitors can explore experience, projects, and contact details in English, Russian, or Japanese.
 
-Currently, two official plugins are available:
+## Highlights
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Interactive 3D boxes with glitch animation and binary stream reveal on selection
+- Procedural ASCII noise rendered on a `<canvas>` using Perlin noise
+- Multi-language content (EN / RU / JP) driven by a single content source
+- Terminal-style content windows with typing animation for text reveals
+- Responsive layout and adaptive animations tuned for mobile and desktop
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React + TypeScript
+- Vite
+- Tailwind CSS
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# install dependencies
+npm install
+
+# start development server (http://localhost:5173)
+npm run dev
+
+# run production build
+npm run build
+
+# preview the built app locally
+npm run preview
+```
+
+## Project Structure
+
+- `src/App.tsx` – app shell, ASCII background animation, state management
+- `src/components/Box3D.tsx` – interactive cube component with glitch effects
+- `src/components/ContentSection.tsx` – terminal overlay for portfolio content
+- `src/content/portfolioContent.ts` – language-specific copy
+- `src/hooks/useTypingAnimation.ts` – reusable typing animation hook
+- `src/utils/perlinNoise.ts` – Perlin noise helper for the background effect
+
+## Customization
+
+- Update portfolio copy in `src/content/portfolioContent.ts`
+- Replace icons or labels in `App.tsx` (`BOXES` array)
+- Adjust typing speed via the `useTypingAnimation` hook
+- Tweak glitch effect timing in `Box3D.tsx` (`useRandomGlitch`)
+- Tailwind styles can be extended in `tailwind.config.js`
+
+## Deployment
+
+The project builds to static assets (`npm run build`). Deploy the contents of `dist/` to any static host (Netlify, Vercel, GitHub Pages, etc.).
+
+---
+
+Built by Azamat Akhmadullin — feel free to fork and adapt for your own portfolio.

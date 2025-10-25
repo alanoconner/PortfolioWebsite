@@ -1,31 +1,102 @@
-import React, { useEffect, useState } from "react";
+import type { CSSProperties, ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export type Box3DProps = {
-  title?: string;
-  icon?: React.ReactNode;
-  onClick: () => void;
-  isActive?: boolean;
-  size?: number; // edge length in px (default 128)
-  autoSpin?: boolean;        
-  spinSeed?: number;         
-  spinDurationMs?: number; 
-  windowClosed: boolean;
-  isMobile: boolean;
-};
+  title?: string
+  icon?: ReactNode
+  onClick: () => void
+  isActive?: boolean
+  size?: number
+  autoSpin?: boolean
+  spinSeed?: number
+  spinDurationMs?: number
+  overlayOpen: boolean
+  isMobile: boolean
+}
 
-const faceStyleBase: React.CSSProperties = {
-  position: "absolute",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  // border: "1px solid rgba(0,0,0,0.15)",
-  background: "linear-gradient(135deg, rgba(255,255,255,0.96), rgba(229, 233, 235, 0.96))",
-  // boxShadow: "0 6px 20px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(0,0,0,0.28),  0 0 0 1px rgba(255,255,255,0.15)",
-  transition: "transform 450ms ease, opacity 450ms ease",
-  willChange: "transform",
-  // backfaceVisibility: "hidden",
+type FaceConfig = {
+  key: string
+  transform: (expanded: boolean, halfEdge: number) => string
+  fades?: boolean
+}
 
-};
+const FACE_CONFIGS: FaceConfig[] = [
+  { key: 'top', transform: (expanded, halfEdge) => `translateZ(${expanded ? halfEdge : 0}px)` },
+  {
+    key: 'front',
+    transform: (expanded, halfEdge) =>
+      `rotateX(90deg) translateZ(${expanded ? halfEdge : 0}px)`,
+  },
+  {
+    key: 'right',
+    transform: (expanded, halfEdge) =>
+      `rotateY(90deg) translateZ(${expanded ? halfEdge : 0}px)`,
+  },
+  {
+    key: 'bottom',
+    transform: (expanded, halfEdge) => `translateZ(${expanded ? -halfEdge : 0}px)`,
+    fades: true,
+  },
+  {
+    key: 'back',
+    transform: (expanded, halfEdge) =>
+      `rotateX(90deg) translateZ(${expanded ? -halfEdge : 0}px)`,
+    fades: true,
+  },
+  {
+    key: 'left',
+    transform: (expanded, halfEdge) => `rotateY(90deg) translateZ(${expanded ? -halfEdge : 0}px)`,
+    fades: true,
+  },
+]
+
+const faceStyleBase: CSSProperties = {
+  position: 'absolute',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'linear-gradient(135deg, rgba(255,255,255,0.96), rgba(229, 233, 235, 0.96))',
+  transition: 'transform 450ms ease, opacity 450ms ease',
+  willChange: 'transform',
+}
+
+const BINARY_LENGTH = 128
+
+const binaryPlaceholder = (length: number) => ' '.repeat(length)
+
+const GlitchLayers = () => (
+  <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
+    <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
+    <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
+    <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
+  </div>
+)
+
+const useRandomGlitch = (options?: { minDelayMs?: number; maxDelayMs?: number; burstMs?: number }) => {
+  const { minDelayMs = 800, maxDelayMs = 5200, burstMs = 100 } = options || {}
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    let triggerTimeout: number | null = null
+    let releaseTimeout: number | null = null
+
+    const schedule = () => {
+      triggerTimeout = window.setTimeout(() => {
+        setActive(true)
+        releaseTimeout = window.setTimeout(() => setActive(false), Math.floor(burstMs * (0.8 + Math.random() * 0.6)))
+        schedule()
+      }, Math.floor(Math.random() * (maxDelayMs - minDelayMs)) + minDelayMs)
+    }
+
+    schedule()
+    return () => {
+      if (triggerTimeout) window.clearTimeout(triggerTimeout)
+      if (releaseTimeout) window.clearTimeout(releaseTimeout)
+    }
+  }, [burstMs, maxDelayMs, minDelayMs])
+
+  return active
+}
 
 const Box3D: React.FC<Box3DProps> = ({
   title,
@@ -36,342 +107,125 @@ const Box3D: React.FC<Box3DProps> = ({
   autoSpin = false,
   spinSeed,
   spinDurationMs = 10000,
-  windowClosed,
-  isMobile
+  overlayOpen,
+  isMobile,
 }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
+  const [binaryStream, setBinaryStream] = useState(() => binaryPlaceholder(BINARY_LENGTH))
+  const glitchOn = useRandomGlitch()
 
-  const seed = spinSeed? spinSeed * 3 : 1;
-  const jitter = ((seed * 9301 + 49297) % 233280) / 233280; // 0..1
-  const dur = Math.round(spinDurationMs * (1.2 + 0.4 * jitter)); // 0.8x..1.2x
-  const delay = Math.round(-(jitter * dur)); // отрицательная задержка — разные фазы
-  const selectedLength = 128
-  const [selected01, setSelected01] = useState<string[]>(Array(selectedLength).fill(" "));
-  const glitchOn = useRandomGlitch();          // или включай по hover/active
+  const jitterSeed = spinSeed ? spinSeed * 3 : 1
+  const jitter = ((jitterSeed * 9301 + 49297) % 233280) / 233280
+  const duration = useMemo(
+    () => Math.round(spinDurationMs * (0.8 + 0.4 * jitter)),
+    [spinDurationMs, jitter],
+  )
+  const animationDelay = useMemo(() => Math.round(-(jitter * duration)), [duration, jitter])
 
+  const halfEdge = size / 2
+  const showGlitch = glitchOn && !expanded
+  const faceClass = showGlitch ? 'relative overflow-visible will-change-transform glitch-face' : 'relative overflow-visible will-change-transform'
 
-  const s = size; // cube edge
-  const h = s / 2; // half edge
+  useEffect(() => {
+    if (!expanded) return
 
-  // helpers to build transforms for two states
-  const T = {
-    top: (exp: boolean) => `translateZ(${exp ? h : 0}px)`,
-    bottom: (exp: boolean) => `translateZ(${exp ? -h : 0}px)`,
-    front: (exp: boolean) => `rotateX(90deg) translateZ(${exp ? h : 0}px)`,
-    back: (exp: boolean) => `rotateX(90deg) translateZ(${exp ? -h : 0}px)`,
-    right: (exp: boolean) => `rotateY(90deg) translateZ(${exp ? h : 0}px)`,
-    left: (exp: boolean) => `rotateY(90deg) translateZ(${exp ? -h : 0}px)`,
-  } as const;
+    const interval = window.setInterval(() => {
+      const nextDigit = Math.round(Math.random()).toString()
+      setBinaryStream(prev => {
+        const next = `${prev}${nextDigit}`.slice(-BINARY_LENGTH)
+        return next.padStart(BINARY_LENGTH, ' ')
+      })
+    }, 50)
 
-    // Add this function to create random glitch per face
-  const getFaceGlitchClass = (faceIndex: number) => {
-    if (!glitchOn) return '';
-    
-    // Only glitch 2-3 random faces at a time
-    const shouldGlitch = Math.random() > 0.4; // 60% chance per face
-    return shouldGlitch ? 'glitch-face' : '';
-  };
+    return () => window.clearInterval(interval)
+  }, [expanded])
 
-  // Then use it for each face:
-  const FaceClass1 = `relative overflow-visible will-change-transform ${ (glitchOn && !expanded ) ? getFaceGlitchClass(0) : ''}`;
-  // const FaceClass2 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(1)}`;
-  // const FaceClass3 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(2)}`;
-  // const FaceClass4 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(3)}`;
-  // const FaceClass5 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(4)}`;
-  // const FaceClass6 = `relative overflow-visible will-change-transform ${getFaceGlitchClass(5)}`;
+  useEffect(() => {
+    if (!overlayOpen) {
+      setExpanded(false)
+    }
+  }, [overlayOpen])
 
-  const randomExpansionMobile = (isMobile: boolean, setExpanded: (v: boolean) => void) => {
-    if (!isMobile) return;
-  
-    // Randomly trigger after a delay
-    const delay = Math.floor(Math.random() * 5000) + 2000; // 2–7s
-    const timer = setTimeout(() => {
-      const prob = Math.random(); // 0–1
-      if (prob < 0.9) {
-        setExpanded(true);
-  
-        setTimeout(() => setExpanded(false), 3000);
+  useEffect(() => {
+    if (!isMobile || isActive) return
+
+    let collapseTimer: number | null = null
+    const delay = window.setTimeout(() => {
+      if (Math.random() < 0.9) {
+        setExpanded(true)
+        collapseTimer = window.setTimeout(() => setExpanded(false), 3000)
       }
-    }, delay);
-  
-    return () => clearTimeout(timer);
-  };
+    }, Math.floor(Math.random() * 5000) + 2000)
 
+    return () => {
+      window.clearTimeout(delay)
+      if (collapseTimer) window.clearTimeout(collapseTimer)
+    }
+  }, [isMobile, isActive])
 
-  useEffect(() => {
-    if (!expanded) return;
-    const interval = setInterval(() => {
-      const newItem = Math.round(Math.random()).toString();
-      setSelected01(prev => {
-        // Remove the oldest element (index 0), add new one at end
-        const updated = [...prev.slice(1), newItem];
-        return updated;
-      });
-    }, 50);
-  
-    return () => clearInterval(interval);
-  }, [expanded]);
-
-  useEffect(() => {
-    if (windowClosed === false) {setExpanded(false)}
-  }, [windowClosed])
-
-  useEffect(() => {
-    const cleanup = randomExpansionMobile(isMobile, setExpanded);
-    return cleanup;
-  });
-
-  function useRandomGlitch(opts?: { minDelayMs?: number; maxDelayMs?: number; burstMs?: number }) {
-    const { minDelayMs = 800, maxDelayMs = 5200, burstMs = 100 } = opts || {};
-    const [on, setOn] = React.useState(false);
-  
-    React.useEffect(() => {
-      let timeout: number;
-      let interval: number;
-  
-      const schedule = () => {
-        const delay = Math.floor(Math.random() * (maxDelayMs - minDelayMs)) + minDelayMs;
-        interval = window.setTimeout(() => {
-          setOn(true);
-          timeout = window.setTimeout(() => setOn(false), Math.floor(burstMs * (0.8 + Math.random() * 0.6)));
-          schedule();
-        }, delay);
-      };
-  
-      schedule();
-      return () => { clearTimeout(timeout); clearTimeout(interval); };
-    }, [minDelayMs, maxDelayMs, burstMs]);
-  
-    return on;
-  }
+  const renderFaceContent = () => (
+    <>
+      <div className={expanded ? 'flex flex-col items-center justify-center text-gray-700' : 'hidden'}>
+        {!isActive && (
+          <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>
+            {icon}
+          </div>
+        )}
+        {title && !isActive && (
+          <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
+            {title}
+          </div>
+        )}
+      </div>
+      {isActive && (
+        <div className="pointer-events-none absolute inset-0 m-auto flex items-start justify-start rounded-sm bg-gray-200 animate-pulse break-all leading-tight whitespace-pre-line">
+          {binaryStream}
+        </div>
+      )}
+      <GlitchLayers />
+    </>
+  )
 
   return (
     <div
       onMouseEnter={() => setExpanded(true)}
-      onMouseLeave={() => {
-        isActive? setExpanded(true) : setExpanded(false)
-      }}
+      onMouseLeave={() => setExpanded(isActive)}
       onClick={() => {
         setExpanded(true)
         onClick()
-      }
-      }
-      className="relative inline-block cursor-pointer select-none"
-      style={{
-        perspective: 1000,
       }}
+      className="relative inline-block cursor-pointer select-none"
+      style={{ perspective: 1000 }}
     >
-      {/* 3D stage */}
       <div
         className="relative"
         style={{
-          width: s,
-          height: s,
-          transformStyle: "preserve-3d",
-          transform: "rotateX(60deg) rotateZ(-15deg)",
+          width: size,
+          height: size,
+          transformStyle: 'preserve-3d',
+          transform: 'rotateX(60deg) rotateZ(-15deg)',
           ...(autoSpin
-            ? {
-                animation: `box3d-spin-xyz ${dur}ms linear infinite`,
-                animationDelay: `${delay}ms`,
-              }
+            ? { animation: `box3d-spin-xyz ${duration}ms linear infinite`, animationDelay: `${animationDelay}ms` }
             : undefined),
         }}
       >
-        {/* Three central planes (initial). They move out to +Z, +Y, +X */}
-        <div
-          className={FaceClass1}
-
-          style={{
-            ...faceStyleBase,
-            width: s,
-            height: s,
-            transform: T.top(expanded),
-          }}
-        >
-          
-          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
-            {(title && !isActive) && (
-              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
-                {title}
-              </div>
-            )}
+        {FACE_CONFIGS.map(face => (
+          <div
+            key={face.key}
+            className={faceClass}
+            style={{
+              ...faceStyleBase,
+              width: size,
+              height: size,
+              transform: face.transform(expanded, halfEdge),
+              opacity: face.fades ? (expanded ? 0.96 : 0) : 1,
+            }}
+          >
+            {renderFaceContent()}
           </div>
-          {isActive && (
-            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
-              {selected01}
-            </div>
-          )}
-
-          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
-            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
-            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
-            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
-          </div>
-        </div>
-
-        <div
-          // className={FaceClass2}
-
-          style={{
-            ...faceStyleBase,
-            width: s,
-            height: s,
-            transform: T.front(expanded),
-          }}
-        >
-          
-          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
-            {(title && !isActive) && (
-              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
-                {title}
-              </div>
-            )}
-          </div>
-          {isActive && (
-            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
-              {selected01}
-            </div>
-          )}
-          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
-            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
-            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
-            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
-          </div>
-        </div>
-
-        <div
-          // className={FaceClass3}
-
-          style={{
-            ...faceStyleBase,
-            width: s,
-            height: s,
-            transform: T.right(expanded),
-          }}
-        >
-          
-          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
-            {(title && !isActive) && (
-              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
-                {title}
-              </div>
-            )}
-          </div>
-          {isActive && (
-            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
-              {selected01}
-            </div>
-          )}
-          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
-            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
-            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
-            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
-          </div>
-        </div>
-
-        {/* The complementary faces fade in and move to -Z, -Y, -X */}
-        <div
-          // className={FaceClass4}
-          style={{
-            ...faceStyleBase,
-            width: s,
-            height: s,
-            transform: T.bottom(expanded),
-            opacity: expanded ? 0.96 : 0,
-          }}
-        >
-          
-          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
-            {(title && !isActive) && (
-              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
-                {title}
-              </div>
-            )}
-          </div>
-          {isActive && (
-            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
-              {selected01}
-            </div>
-          )}
-          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
-            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
-            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
-            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
-          </div>
-        </div>
-
-        <div
-          // className={FaceClass5}
-
-          style={{
-            ...faceStyleBase,
-            width: s,
-            height: s,
-            transform: T.back(expanded),
-            opacity: expanded ? 0.96 : 0,
-          }}
-        >
-          
-          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
-            {(title && !isActive) && (
-              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
-                {title}
-              </div>
-            )}
-          </div>
-          {isActive && (
-            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
-              {selected01}
-            </div>
-          )}
-          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
-            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
-            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
-            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
-          </div>
-        </div>
-
-        <div
-          // className={FaceClass6}
-
-          style={{
-            ...faceStyleBase,
-            width: s,
-            height: s,
-            transform: T.left(expanded),
-            opacity: expanded ? 0.96 : 0,
-          }}
-        >
-          
-          <div className={expanded ? `flex flex-col items-center justify-center text-gray-700` : `hidden`}>
-            {!isActive && <div className={`${size <= 100 ? 'text-2xl' : 'text-4xl'} leading-none drop-shadow-sm`}>{icon}</div>}
-            {(title && !isActive) && (
-              <div className={`mt-1 ${size <= 100 ? 'text-[9px]' : 'text-[11px]'} font-mono text-gray-600 opacity-90`}>
-                {title}
-              </div>
-            )}
-          </div>
-          {isActive && (
-            <div className="pointer-events-none absolute inset-0 rounded-sm bg-gray-200 animate-pulse break-all whitespace-normal m-auto flex justify-start items-start leading-tight">
-              {selected01}
-            </div>
-          )}
-          <div className="pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
-            <div className="glitch-rgb absolute inset-0" style={{ zIndex: 1 }} />
-            <div className="glitch-outline absolute inset-0" style={{ zIndex: 2 }} />
-            <div className="glitch-scanlines absolute inset-0" style={{ zIndex: 3 }} />
-          </div>
-        </div>
-
-        {/* outline rings */}
-        {/* <div className="pointer-events-none absolute -inset-1 border border-gray-400/30" />
-        <div className="pointer-events-none absolute -inset-2 border border-gray-500/20" /> */}
+        ))}
       </div>
+
       <style>
         {`@keyframes box3d-spin-xyz {
             from { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
@@ -379,7 +233,6 @@ const Box3D: React.FC<Box3DProps> = ({
         }`}
       </style>
 
-      {/* GLITCHES */}
       <style>{`
         /* базовая тряска, короткими рывками */
         @keyframes glitch-jitter {
@@ -492,7 +345,7 @@ const Box3D: React.FC<Box3DProps> = ({
         }
       `}</style>
     </div>
-  );
-};
+  )
+}
 
-export default Box3D;
+export default Box3D
