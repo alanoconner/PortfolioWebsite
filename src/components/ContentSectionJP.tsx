@@ -247,15 +247,15 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
                   <span className="text-cyan-400 text-sm"><TypingText text="GitHub:" delay={300} /></span>
-                  <span className="text-yellow-400 text-sm break-words"><TypingText text="github.com/alanoconner" delay={400} /></span>
+                  <a href="https://github.com/alanoconner" target="_blank" className="text-yellow-400 text-sm break-words"><TypingText text="github.com/alanoconner" delay={400} /></a>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
                   <span className="text-cyan-400 text-sm"><TypingText text="LinkedIn:" delay={500} /></span>
-                  <span className="text-yellow-400 text-sm break-words"><TypingText text="linkedin.com/in/akhmadu17in" delay={600} /></span>
+                  <a href="https://linkedin.com/in/akhmadu17in" target="_blank" className="text-yellow-400 text-sm break-words"><TypingText text="linkedin.com/in/akhmadu17in" delay={600} /></a>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
                   <span className="text-cyan-400 text-sm"><TypingText text="Telegram:" delay={800} /></span>
-                  <span className="text-yellow-400 text-sm break-words"><TypingText text="@akhmadull_in" delay={900} /></span>
+                  <a href="https://t.me/akhmadull_in" target="_blank" className="text-yellow-400 text-sm break-words"><TypingText text="@akhmadull_in" delay={900} /></a>
                 </div>
               </div>
               {/* <div className="text-green-400 mt-4">
