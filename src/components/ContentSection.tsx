@@ -45,6 +45,12 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
 
 const CONTENT_REVEAL_DELAY = 240;
 const CONTENT_HIDE_DELAY = 450;
+const experienceAccentClasses: Record<string, { border: string; text: string }> = {
+  cyan: { border: 'border-cyan-400', text: 'text-cyan-400' },
+  green: { border: 'border-green-400', text: 'text-green-400' },
+  yellow: { border: 'border-yellow-400', text: 'text-yellow-400' },
+  red: { border: 'border-red-400', text: 'text-red-400' }
+};
 
 const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
@@ -65,50 +71,40 @@ April 2021 - March 2025`
     {
       id:0,
       position:"Software Engineer",
-      timeAndPlace: "Small Step Co., Ltd • May 2025 - Present",
-      responsibilities: `Led development of internal and client -facing web
-        systems from concept to production, ensuring
-        scalability and maintainability.
-        Designed backend architecture using Kotlin and
-        PostgreSQL, supporting high-volume transactional
-        data for operational processes.
-        Automated deployment with GitHub Actions, Docker,
-        and Linux -based CI/CD, reducing manual overhead
-        and enabling weekly releases.
-        Built responsive UI components in Vue.js, improving
-        usability across multiple business apps.
-        Enhanced system reliability through comprehensive
-        unit testing and continuous integration.`,
-      color: 'cyan-400'
+      timeAndPlace: "Small Step Co., Ltd., Fukuoka • May 2025 - Present",
+      responsibilities: `Led development of internal and client-facing web systems from concept to production, improving scalability and long-term maintainability.
+        Designed backend architecture using Kotlin and PostgreSQL to support high-volume transactional workflows.
+        Built a stable AWS production environment using Cognito, ALB, Auto Scaling Groups, EC2, PostgreSQL, Lambda, and Fargate for scalable web and serverless services.
+        Configured CI/CD pipelines with GitHub Actions for automated production deployments, reducing manual release work by 60% and supporting frequent releases.
+        Built responsive React UI components that improved usability and reduced average processing time by 30%.`,
+      color: 'cyan'
     },
 
     {
       id:1,
       position:"Web Developer",
-      timeAndPlace: "Small Step Co., Ltd • April 2023 - May 2025",
-      responsibilities: `Delivered a web-based digital signature and
-        document exchange platform that eliminated
-        inefficient manual workflows between partner
-        companies.
-        Implemented task tracking and order management
-        tools for B2B clients, increasing operational
-        transparency and coordination.
-        Developed a hospital equipment tracking system
-        used in surgical units, reducing search time and
-        improving inventory control.
-        Maintained and deployed multi-environment
-        applications using Flask, Vue/Nuxt.js, and MySQL,
-        applying strong full-stack and DevOps skills.`,
-      color: 'green-400'
+      timeAndPlace: "Small Step Co., Ltd., Fukuoka • April 2023 - May 2025",
+      responsibilities: `Delivered a web-based digital signature and document exchange platform that removed manual coordination between partner companies.
+        Implemented task tracking and order management tools for B2B clients, improving operational transparency and workflow coordination.
+        Developed a hospital equipment tracking system used in surgical units, reducing search time and improving inventory control.
+        Maintained and deployed multi-environment applications using Flask, Vue/Nuxt.js, and MySQL, applying strong full-stack and DevOps practices.`,
+      color: 'green'
     },
     {
       id:2,
+      position:"Automation Engineer",
+      timeAndPlace: "Mimamol, Fukuoka • December 2024 - March 2025",
+      responsibilities: `Built automated supplier discovery workflows for product sourcing using Python, Playwright, and n8n-style orchestration.
+        Integrated AI models into workflow steps and developed prompt engineering approaches for supplier search and data filtering.
+        Created web-scraping pipelines that reduced manual supplier research and scraping time by 40%.`,
+      color: "yellow"
+    },
+    {
+      id:3,
       position:"Intern",
-      timeAndPlace: "Line Fukuoka • July 2022",
-      responsibilities: `Conducted research on UX pain points and proposed
-        process automation strategies to reduce user support
-        volume.`,
-      color: "yellow-400"
+      timeAndPlace: "LINE Fukuoka, Fukuoka • July 2022",
+      responsibilities: `Researched UX pain points and proposed process automation strategies to reduce user support volume.`,
+      color: "red"
     }
   ]
 
@@ -242,9 +238,10 @@ April 2021 - March 2025`
                 {
                   experiences.map((exp, index) => {
                     const baseDelay = index * 4500; // 3 seconds between each experience
+                    const accent = experienceAccentClasses[exp.color] ?? experienceAccentClasses.cyan;
                     return (
-                      <div key={index} className={`border-l-2 border-${exp.color} pl-4`}>
-                        <div className={"text-"+exp.color}><TypingText text={exp.position} delay={baseDelay} /></div>
+                      <div key={index} className={`border-l-2 pl-4 ${accent.border}`}>
+                        <div className={accent.text}><TypingText text={exp.position} delay={baseDelay} /></div>
                         <div className="text-gray-400"><TypingText text={exp.timeAndPlace} delay={baseDelay + exp.position.length * 5 + 200} /></div>
                         <div className="text-gray-300 text-xs mt-1"><TypingText text={exp.responsibilities} delay={baseDelay + exp.position.length * 5 + exp.timeAndPlace.length * 5 + 400} /></div>
                       </div>

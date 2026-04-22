@@ -45,6 +45,12 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
 
 const CONTENT_REVEAL_DELAY = 240;
 const CONTENT_HIDE_DELAY = 450;
+const experienceAccentClasses: Record<string, { border: string; text: string }> = {
+  cyan: { border: 'border-cyan-400', text: 'text-cyan-400' },
+  green: { border: 'border-green-400', text: 'text-green-400' },
+  yellow: { border: 'border-yellow-400', text: 'text-yellow-400' },
+  red: { border: 'border-red-400', text: 'text-red-400' }
+};
 
 const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
@@ -65,24 +71,31 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
     {
       "id": 0,
       "position": "ソフトウェアエンジニア",
-      "timeAndPlace": "株式会社スモールステップ • 2025年5月〜現在",
-      "responsibilities": "社内およびクライアント向けのWebシステムの開発を、企画から本番運用まで主導し、スケーラビリティと保守性を確保。\nKotlinとPostgreSQLを用いてバックエンドアーキテクチャを設計し、業務プロセス向けの大量トランザクションデータを処理。\nGitHub Actions、Docker、LinuxベースのCI/CDを使用してデプロイを自動化し、手作業を削減、週次リリースを実現。\nVue.jsでレスポンシブなUIコンポーネントを構築し、複数の業務アプリでユーザビリティを改善。\n包括的な単体テストと継続的インテグレーションにより、システムの信頼性を向上。",
-      "color": "cyan-400"
+      "timeAndPlace": "株式会社スモールステップ, 福岡 • 2025年5月〜現在",
+      "responsibilities": "社内およびクライアント向けのWebシステム開発を構想段階から本番運用まで主導し、拡張性と長期的な保守性を向上。\nKotlinとPostgreSQLを用いて、高トランザクションの業務フローを支えるバックエンドアーキテクチャを設計。\nCognito、ALB、Auto Scaling Groups、EC2、PostgreSQL、Lambda、Fargateを活用し、スケーラブルなWebサービスとサーバーレス処理のための安定したAWS本番環境を構築。\nGitHub Actionsで自動本番デプロイ用のCI/CDパイプラインを構成し、手動リリース作業を60%削減しつつ高頻度リリースを支援。\nレスポンシブなReact UIコンポーネントを構築し、操作性を改善して平均処理時間を30%削減。",
+      "color": "cyan"
     },
 
     {
       "id": 1,
       "position": "Webデベロッパー",
-      "timeAndPlace": "株式会社スモールステップ • 2023年4月〜2025年5月",
-      "responsibilities": "パートナー企業間の非効率的な手作業を排除する、Webベースの電子署名・文書交換プラットフォームを開発。\nB2Bクライアント向けにタスク追跡および注文管理ツールを実装し、業務の透明性と連携を向上。\n手術室で使用される医療機器追跡システムを開発し、検索時間を短縮し在庫管理を改善。\nFlask、Vue/Nuxt.js、MySQLを用いて複数環境のアプリケーションを保守・デプロイし、フルスタックおよびDevOpsのスキルを発揮。",
-      "color": "green-400"
+      "timeAndPlace": "株式会社スモールステップ, 福岡 • 2023年4月〜2025年5月",
+      "responsibilities": "パートナー企業間の手作業による調整をなくす、Webベースの電子署名・文書交換プラットフォームを提供。\nB2Bクライアント向けにタスク管理と受注管理ツールを実装し、業務の可視性とワークフロー連携を改善。\n手術部門で利用される病院設備追跡システムを開発し、検索時間を短縮して在庫管理を改善。\nFlask、Vue/Nuxt.js、MySQLを用いて複数環境のアプリケーションを保守・デプロイし、強いフルスタック/DevOps実践を適用。",
+      "color": "green"
     },
     {
       "id": 2,
+      "position": "オートメーションエンジニア",
+      "timeAndPlace": "Mimamol, 福岡 • 2024年12月〜2025年3月",
+      "responsibilities": "Python、Playwright、n8nスタイルのオーケストレーションを用いて、商品調達向けのサプライヤー探索ワークフローを自動化。\nAIモデルを各ワークフローステップに組み込み、サプライヤー検索とデータフィルタリングのためのプロンプト設計を開発。\nWebスクレイピング基盤を構築し、手動のサプライヤー調査とスクレイピング時間を40%削減。",
+      "color": "yellow"
+    },
+    {
+      "id": 3,
       "position": "インターン",
-      "timeAndPlace": "LINE福岡 • 2022年7月",
-      "responsibilities": "UXにおける課題点を調査し、ユーザーサポート件数を削減するためのプロセス自動化戦略を提案。",
-      "color": "yellow-400"
+      "timeAndPlace": "LINE Fukuoka, 福岡 • 2022年7月",
+      "responsibilities": "UX上の課題点を調査し、ユーザーサポート件数を減らすためのプロセス自動化戦略を提案。",
+      "color": "red"
     }
   ]
 
@@ -216,9 +229,10 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
                 {
                   experiences.map((exp, index) => {
                     const baseDelay = index * 4500; // 3 seconds between each experience
+                    const accent = experienceAccentClasses[exp.color] ?? experienceAccentClasses.cyan;
                     return (
-                      <div key={index} className={`border-l-2 border-${exp.color} pl-4`}>
-                        <div className={"text-"+exp.color}><TypingText text={exp.position} delay={baseDelay} /></div>
+                      <div key={index} className={`border-l-2 pl-4 ${accent.border}`}>
+                        <div className={accent.text}><TypingText text={exp.position} delay={baseDelay} /></div>
                         <div className="text-gray-400"><TypingText text={exp.timeAndPlace} delay={baseDelay + exp.position.length * 5 + 200} /></div>
                         <div className="text-gray-300 text-xs mt-1"><TypingText text={exp.responsibilities} delay={baseDelay + exp.position.length * 5 + exp.timeAndPlace.length * 5 + 400} /></div>
                       </div>

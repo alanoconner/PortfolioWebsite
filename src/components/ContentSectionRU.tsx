@@ -45,6 +45,12 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
 
 const CONTENT_REVEAL_DELAY = 240;
 const CONTENT_HIDE_DELAY = 450;
+const experienceAccentClasses: Record<string, { border: string; text: string }> = {
+  cyan: { border: 'border-cyan-400', text: 'text-cyan-400' },
+  green: { border: 'border-green-400', text: 'text-green-400' },
+  yellow: { border: 'border-yellow-400', text: 'text-yellow-400' },
+  red: { border: 'border-red-400', text: 'text-red-400' }
+};
 
 const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
@@ -65,64 +71,40 @@ const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClo
     {
       id:0,
       position:"Software Engineer",
-      timeAndPlace: "Small Step Co., Ltd • Май 2025 - Настоящее время",
-      responsibilities: `Руководил разработкой внутренних и
-                          клиентских веб-систем — от идеи до
-                          развёртывания в продакшн, с акцентом на
-                          масштабируемость и стабильность.
-                          
-                          Спроектировал архитектуру backend на Kotlin
-                          + PostgreSQL для работы с
-                          высоконагруженными транзакционными
-                          данными.
-                          
-                          Автоматизировал процесс деплоя с
-                          использованием GitHub Actions, Docker и Linux
-                          CI/CD, что сократило ручную работу и
-                          обеспечило еженедельные релизы.
-                          
-                          Разрабатывал UI-компоненты на React,
-                          улучшив пользовательский опыт в нескольких
-                          приложениях.
-                          
-                          Повысил надёжность системы через покрытие
-                          unit -тестами и`,
-      color: 'cyan-400'
+      timeAndPlace: "Small Step Co., Ltd., Фукуока • Май 2025 - Настоящее время",
+      responsibilities: `Руководил разработкой внутренних и клиентских веб-систем от идеи до продакшна, повышая масштабируемость и долгосрочную поддерживаемость.
+                          Спроектировал backend-архитектуру на Kotlin и PostgreSQL для поддержки высоконагруженных транзакционных процессов.
+                          Построил стабильную production-среду в AWS с использованием Cognito, ALB, Auto Scaling Groups, EC2, PostgreSQL, Lambda и Fargate для масштабируемых web и serverless сервисов.
+                          Настроил CI/CD пайплайны на GitHub Actions для автоматизированных production-деплоев, сократив ручную работу при релизах на 60% и поддержав частые поставки.
+                          Разработал адаптивные React UI-компоненты, которые улучшили удобство использования и сократили среднее время обработки на 30%.`,
+      color: 'cyan'
     },
 
     {
       id:1,
       position:"Web Developer",
-      timeAndPlace: "Small Step Co., Ltd • Апрель 2023 - Май 2025",
-      responsibilities: `Создал веб-платформу для обмена
-                          документами и цифровой подписи, которая
-                          заменила неэффективные ручные процессы
-                          между партнёрами.
-                          
-                          Реализовал инструменты для отслеживания
-                          задач и управления заказами, повысив
-                          прозрачность операций у B2B-клиентов.
-                          
-                          Разрабатывал систему учёта медицинского
-                          оборудования, используемую в хирургических
-                          отделениях, что сократило время на поиск и
-                          улучшило контроль.
-                          
-                          Поддерживал и развёртывал приложения в
-                          нескольких окружениях, используя Flask,
-                          Vue/Nuxt.js и MySQL, применяя full-stack и
-                          DevOps-подходы.`,
-      color: 'green-400'
+      timeAndPlace: "Small Step Co., Ltd., Фукуока • Апрель 2023 - Май 2025",
+      responsibilities: `Разработал веб-платформу для цифровой подписи и обмена документами, устранив ручную координацию между компаниями-партнёрами.
+                          Реализовал инструменты отслеживания задач и управления заказами для B2B-клиентов, повысив прозрачность операций и координацию рабочих процессов.
+                          Создал систему отслеживания больничного оборудования для хирургических отделений, сократив время поиска и улучшив контроль инвентаря.
+                          Поддерживал и развёртывал приложения в нескольких окружениях с использованием Flask, Vue/Nuxt.js и MySQL, применяя сильные full-stack и DevOps-практики.`,
+      color: 'green'
     },
     {
       id:2,
+      position:"Automation Engineer",
+      timeAndPlace: "Mimamol, Фукуока • Декабрь 2024 - Март 2025",
+      responsibilities: `Построил автоматизированные workflow для поиска поставщиков в задачах product sourcing с использованием Python, Playwright и orchestration в стиле n8n.
+                          Интегрировал AI-модели в отдельные шаги процесса и разработал подходы prompt engineering для поиска поставщиков и фильтрации данных.
+                          Создал web-scraping пайплайны, которые сократили время ручного поиска поставщиков и сбора данных на 40%.`,
+      color: "yellow"
+    },
+    {
+      id:3,
       position:"Стажер",
-      timeAndPlace: "Line Fukuoka • Июль 2022",
-      responsibilities: `Проводил исследование проблем UX и
-                          предложил стратегии автоматизации
-                          поддержки пользователей для снижения
-                          нагрузки на техподдержку.`,
-      color: "yellow-400"
+      timeAndPlace: "LINE Fukuoka, Фукуока • Июль 2022",
+      responsibilities: `Исследовал UX-болевые точки и предложил стратегии автоматизации процессов для снижения нагрузки на пользовательскую поддержку.`,
+      color: "red"
     }
   ]
 
@@ -256,9 +238,10 @@ const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClo
                 {
                   experiences.map((exp, index) => {
                     const baseDelay = index * 4500; // 3 seconds between each experience
+                    const accent = experienceAccentClasses[exp.color] ?? experienceAccentClasses.cyan;
                     return (
-                      <div key={index} className={`border-l-2 border-${exp.color} pl-4`}>
-                        <div className={"text-"+exp.color}><TypingText text={exp.position} delay={baseDelay} /></div>
+                      <div key={index} className={`border-l-2 pl-4 ${accent.border}`}>
+                        <div className={accent.text}><TypingText text={exp.position} delay={baseDelay} /></div>
                         <div className="text-gray-400"><TypingText text={exp.timeAndPlace} delay={baseDelay + exp.position.length * 5 + 200} /></div>
                         <div className="text-gray-300 text-xs mt-1"><TypingText text={exp.responsibilities} delay={baseDelay + exp.position.length * 5 + exp.timeAndPlace.length * 5 + 400} /></div>
                       </div>

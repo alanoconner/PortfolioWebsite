@@ -33,3 +33,12 @@ body {
   min-height: 100vh;
   position: relative;
 }
+
+.sheet-scroll-area {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.sheet-scroll-area::-webkit-scrollbar {
+  display: none;
+}
