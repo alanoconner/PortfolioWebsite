@@ -49,10 +49,18 @@ const CONTENT_HIDE_DELAY = 450;
 const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
   const [visibleType, setVisibleType] = useState(type);
-  const introText = "Full-stack Software Engineer with 2+ years of experience building production-ready web applications for B2B and healthcare domains. Proficient in Kotlin, Vue.js, and CI/CD automation. Trilingual (English, Japanese, Russian) and skilled at delivering reliable solutions across the full development cycle."
-  const introEduText = `Kyushu Institute of Information Sciences,
-                        Japan — Data Science
-                        April 2021 - March 2025`
+  const introText = `Full-stack Software Engineer with 3+ years of experience building production-ready web applications, automation workflows, and cloud infrastructure. Strong background in Kotlin, Python, TypeScript, AWS, and CI/CD. Trilingual in English, Japanese, and Russian and skilled at delivering reliable solutions across the full development cycle.`
+  const introEducation = `Kyushu Institute of Information Sciences, Fukuoka — Data Science (bachelor)
+April 2021 - March 2025`
+  const introSkills = [
+    'Languages: Russian (native), English (fluent), Japanese (fluent)',
+    'Programming: Kotlin, Python, TypeScript, JavaScript, Java',
+    'Frontend: React, Vue.js, Nuxt.js',
+    'Backend: Flask, Django, REST APIs, SpringBoot',
+    'Databases: PostgreSQL, MySQL',
+    'Cloud/DevOps: AWS, Docker, GitHub Actions, CI/CD, Linux, EC2, ALB, Lambda, Fargate, Cognito',
+    'Automation/AI: Playwright, web scraping, workflow automation, LLM APIs, prompt engineering'
+  ]
   const experiences = [
     {
       id:0,
@@ -107,28 +115,50 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
   const projects = [
     {
       id:0,
-      name:"Edaha | B2B Platform",
-      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
+      name:"AI Outfit Recommender",
+      meta: "Flask + Python",
+      timeframe: "2024",
+      highlights: [
+        "Built an ML-powered tool that suggests outfit combinations from user-uploaded images."
+      ]
     },
     {
       id:1,
-      name:"SST-S | Hospital Equipment Tracking System",
-      stack: "VueJS, TypeScript, Kotlin, SpringBoot, PostgreSQL, Docker",
+      name:'Online School Platform "TeraSchool"',
+      meta: "Vue + Flask + MySQL",
+      timeframe: "2025",
+      highlights: [
+        "Developed a web-based school management system designed to support structured learning and streamline course delivery for online education."
+      ]
+    },
+    {
+      id:2,
+      name:"Smeta Tool",
+      meta: "Freelance Project, Remote - Desktop Python Application",
+      timeframe: "February 2026 - March 2026",
+      highlights: [
+        "Built a desktop Python application for construction cost estimation used by the client for upcoming building projects.",
+        "Automated calculation workflows and reduced manual cost estimation time by 70% in active client usage."
+      ]
     },
     {
       id:3,
-      name:"AI Outfit Recommender",
-      stack: "VueJS, JavaScript, Python, Flask, TensorFlow",
+      name:"Startup Idea Analysis Agent",
+      meta: "Personal Project - LLM + Telegram + Python",
+      timeframe: "2026",
+      highlights: [
+        "Developed a Telegram-connected agent that performs initial niche and market research for startup ideas using LLM APIs and Python."
+      ]
     },
     {
       id:4,
-      name:"Zinnia | Product Management System for Factories",
-      stack: "React, TypeScript, Python, Flask, PostgreSQL, Docker",
-    },
-    {
-      id:5,
-      name:"IShift | Nurse Shift Scheduling System",
-      stack: "React, TypeScript, Python, Django, PostgreSQL, Docker",
+      name:"Tender Search Agent",
+      meta: "Personal Project - LLM + Playwright + Python",
+      timeframe: "2026",
+      highlights: [
+        "Built an agent that logs into public procurement platforms, searches for matching tenders, analyzes documentation, and sends summarized updates to users.",
+        "Used LLM APIs and Playwright to automate contract discovery, document review, and notification workflows."
+      ]
     },
   ]
 
@@ -167,7 +197,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
               <div className="text-white space-y-2">
                 <p><TypingText text={introText} delay={0} /></p>
               </div>
-              <div className="text-white space-y-2">
+              <div className="text-white space-y-3">
                 <br />
                 <span className="text-cyan-400">
                   <TypingText text='$' delay={introText.length * 5 + 500} ></TypingText> 
@@ -175,9 +205,22 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
                 <span className="text-green-400" > 
                   <TypingText text=' cat education.txt' delay={introText.length * 5 + 700} ></TypingText> 
                 </span>
-                <br />
-                <span> <TypingText text='' delay={introText.length * 5 + 1000} /></span><br />
-                <p><TypingText text={introEduText} delay={introText.length * 5 + 1300} /></p>
+                <p className="break-words pt-2">
+                  <TypingText text={introEducation} delay={introText.length * 5 + 1100} />
+                </p>
+                <span className="text-cyan-400">
+                  <TypingText text='$' delay={introText.length * 5 + 1900} ></TypingText> 
+                </span>
+                <span className="text-green-400" > 
+                  <TypingText text=' cat skills.txt' delay={introText.length * 5 + 2100} ></TypingText> 
+                </span>
+                <div className="space-y-2 pt-2">
+                  {introSkills.map((skill, index) => (
+                    <p key={skill} className="break-words">
+                      <TypingText text={`- ${skill}`} delay={introText.length * 5 + 2500 + index * 240} />
+                    </p>
+                  ))}
+                </div>
               </div>
               {/* <div className="text-green-400 mt-4">
                 <span className="text-cyan-400">$</span> _
@@ -227,11 +270,30 @@ const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose
               <div className="text-white space-y-3">
                 {
                   projects.map((pr, index) => {
-                    const baseDelay = index * 800; // 2 seconds between each project
+                    const baseDelay = index * 1800;
                     return (
-                      <div key={index} className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-2 hover:bg-gray-800 rounded gap-2 sm:gap-5">
-                        <span className="text-yellow-400 text-sm sm:text-base"><TypingText text={pr.name} delay={baseDelay} /></span>
-                        <span className="text-gray-400 text-xs sm:text-sm break-words"><TypingText text={pr.stack} delay={baseDelay + pr.name.length * 5 + 50} /></span>
+                      <div key={index} className="rounded border border-white/10 p-3 transition-colors hover:bg-gray-800/60">
+                        <div className="space-y-1">
+                          <div className="text-yellow-400 text-sm sm:text-base break-words">
+                            <TypingText text={pr.name} delay={baseDelay} />
+                          </div>
+                          <div className="text-gray-400 text-xs sm:text-sm break-words">
+                            <TypingText text={pr.meta} delay={baseDelay + pr.name.length * 5 + 80} />
+                          </div>
+                          <div className="text-cyan-400 text-xs break-words">
+                            <TypingText text={pr.timeframe} delay={baseDelay + pr.name.length * 5 + pr.meta.length * 5 + 160} />
+                          </div>
+                        </div>
+                        <div className="mt-3 space-y-2 text-gray-300 text-xs sm:text-sm">
+                          {pr.highlights.map((highlight, highlightIndex) => (
+                            <p key={highlight} className="break-words">
+                              <TypingText
+                                text={`- ${highlight}`}
+                                delay={baseDelay + pr.name.length * 5 + pr.meta.length * 5 + pr.timeframe.length * 5 + 260 + highlightIndex * 320}
+                              />
+                            </p>
+                          ))}
+                        </div>
                       </div>
                     )
                   })
