@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import BottomSheet from './BottomSheet';
 
 interface ContentSectionProps {
   type: 'intro' | 'experience' | 'projects' | 'contact';
@@ -42,8 +43,12 @@ const useTypingAnimation = (text: string, speed: number = 50, delay: number = 0)
   return displayedText;
 };
 
-const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClose, isMobile }) => {
+const CONTENT_REVEAL_DELAY = 240;
+const CONTENT_HIDE_DELAY = 450;
+
+const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
+  const [visibleType, setVisibleType] = useState(type);
   const introText = "B2Bおよび医療分野向けの本番環境対応Webアプリケーションを2年以上にわたり開発してきたフルスタックソフトウェアエンジニア。Kotlin、Vue.js、CI/CD自動化に精通。英語・日本語・ロシア語の3言語を操り、開発の全工程において信頼性の高いソリューションを提供。";
   const introEduText = `九州情報大学　経営情報学部　情報ネットワーク学科,
                         データサイエンス
@@ -103,15 +108,20 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
 
   useEffect(() => {
     if (isActive) {
-      // Delay showing content to allow slide animation to start
-      const timer = setTimeout(() => setShowContent(true), 300);
-      return () => clearTimeout(timer);
-    } else {
-      setShowContent(false);
+      setVisibleType(type);
     }
-  }, [isActive]);
+  }, [isActive, type]);
 
-  if (!isActive) return null;
+  useEffect(() => {
+    if (isActive) {
+      // Let the sheet settle before the typing animation starts.
+      const timer = setTimeout(() => setShowContent(true), CONTENT_REVEAL_DELAY);
+      return () => clearTimeout(timer);
+    }
+
+    const timer = setTimeout(() => setShowContent(false), CONTENT_HIDE_DELAY);
+    return () => clearTimeout(timer);
+  }, [isActive]);
 
   const renderContent = () => {
     const TypingText = ({ text, className = "", delay = 0 }: { text: string; className?: string; delay?: number }) => {
@@ -119,17 +129,11 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
       return <span className={className}>{displayedText}</span>;
     };
 
-    switch (type) {
+    switch (visibleType) {
       case 'intro':
         return (
           <div className="space-y-4">
             <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ Info ]</h2>
-            <button
-              onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
-            >
-              X
-            </button>
             <div className="bg-black p-6 border-none font-mono text-sm">
               <div className="text-green-400 mb-4">
                 <span className="text-cyan-400">$</span> whoami
@@ -160,12 +164,6 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
         return (
           <div className="space-y-4">
             <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ EXPERIENCE LOG ]</h2>
-            <button
-              onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
-            >
-              X
-            </button>
             <div className="bg-black p-6  font-mono text-sm">
               <div className="text-green-400 mb-4">
                 <span className="text-cyan-400">$</span> cat experience.log
@@ -196,12 +194,6 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
         return (
           <div className="space-y-4">
             <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ PROJECT REPOSITORY ]</h2>
-            <button
-              onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
-            >
-              X
-            </button>
             <div className="bg-black p-6  font-mono text-sm">
               <div className="text-green-400 mb-4">
                 <span className="text-cyan-400">$</span> ls projects/
@@ -230,12 +222,6 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
         return (
           <div className="space-y-4">
             <h2 className="text-lg sm:text-2xl font-mono text-white mb-4">[ CONTACT ]</h2>
-            <button
-              onClick={()=> onClose()}
-              className="bg-black text-white hover:bg-white border border-white fixed top-2 right-2 sm:top-4 sm:right-4 hover:text-black px-3 py-2 sm:px-4 text-lg sm:text-xl z-30"
-            >
-              X
-            </button>
             <div className="bg-black p-6 font-mono text-sm">
               <div className="text-green-400 mb-4">
                 <span className="text-cyan-400">$</span> contact --help
@@ -271,15 +257,9 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
   };
 
   return (
-    <div 
-      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20  ${isMobile? "max-w-sm sm:max-w-2xl lg:max-w-4xl px-4 max-h-[90vh] overflow-y-auto w-full " : "w-fit"}`}
-    >
-      <div
-        className="bg-black/90 backdrop-blur-sm rounded border-none p-4 w-full"
-      >
-        {showContent && renderContent()}
-      </div>
-    </div>
+    <BottomSheet isActive={isActive} onClose={onClose}>
+      {showContent && renderContent()}
+    </BottomSheet>
   );
 };
 
