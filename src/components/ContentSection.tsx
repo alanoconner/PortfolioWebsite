@@ -55,7 +55,7 @@ const experienceAccentClasses: Record<string, { border: string; text: string }> 
 const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
   const [visibleType, setVisibleType] = useState(type);
-  const introText = `Full-stack Software Engineer with 3+ years of experience building production-ready web applications, automation workflows, and cloud infrastructure. Strong background in Kotlin, Python, TypeScript, AWS, and CI/CD. Trilingual in English, Japanese, and Russian and skilled at delivering reliable solutions across the full development cycle.`
+  const introText = `Full-stack Software Engineer with 3+ years building and scaling B2B products — designed AWS infrastructure, automated CI/CD pipelines that cut release overhead by ~60%, and delivered a document exchange platform now used by 250+ companies. Also builds LLM-powered automation agents on the side. Trilingual in English, Japanese, and Russian and skilled at delivering reliable solutions across the full development cycle.`
   const introEducation = `Kyushu Institute of Information Sciences, Fukuoka — Data Science (bachelor)
 April 2021 - March 2025`
   const introSkills = [
@@ -73,10 +73,10 @@ April 2021 - March 2025`
       position:"Software Engineer",
       timeAndPlace: "Small Step Co., Ltd., Fukuoka • May 2025 - Present",
       responsibilities: `Led development of internal and client-facing web systems from concept to production, improving scalability and long-term maintainability.
-        Designed backend architecture using Kotlin and PostgreSQL to support high-volume transactional workflows.
+        Designed backend architecture using Kotlin and PostgreSQL to support high-volume transactional workflows; profiled and rewrote critical queries, cutting average response time by ~30% under production load.
         Built a stable AWS production environment using Cognito, ALB, Auto Scaling Groups, EC2, PostgreSQL, Lambda, and Fargate for scalable web and serverless services.
         Configured CI/CD pipelines with GitHub Actions for automated production deployments, reducing manual release work by 60% and supporting frequent releases.
-        Built responsive React UI components that improved usability and reduced average processing time by 30%.`,
+        Designed a React component library used across 3 client products, standardizing UI patterns and speeding up developer onboarding.`,
       color: 'cyan'
     },
 
@@ -84,10 +84,10 @@ April 2021 - March 2025`
       id:1,
       position:"Web Developer",
       timeAndPlace: "Small Step Co., Ltd., Fukuoka • April 2023 - May 2025",
-      responsibilities: `Delivered a web-based digital signature and document exchange platform that removed manual coordination between partner companies.
+      responsibilities: `Delivered a web-based digital signature and document exchange platform — now used by 250+ companies — that removed manual coordination between partner companies.
         Implemented task tracking and order management tools for B2B clients, improving operational transparency and workflow coordination.
-        Developed a hospital equipment tracking system used in surgical units, reducing search time and improving inventory control.
-        Maintained and deployed multi-environment applications using Flask, Vue/Nuxt.js, and MySQL, applying strong full-stack and DevOps practices.`,
+        Developed a hospital equipment tracking system deployed across 3+ hospitals, giving surgical teams live equipment visibility and reducing prep delays.
+        Grew from executing tasks to independently owning feature delivery: gathered requirements, proposed technical solutions, and shipped end-to-end without supervision.`,
       color: 'green'
     },
     {
@@ -96,12 +96,13 @@ April 2021 - March 2025`
       timeAndPlace: "Mimamol, Fukuoka • December 2024 - March 2025",
       responsibilities: `Built automated supplier discovery workflows for product sourcing using Python, Playwright, and n8n-style orchestration.
         Integrated AI models into workflow steps and developed prompt engineering approaches for supplier search and data filtering.
+        Embedded LLM-based scoring into 3 repetitive analyst workflows, replacing manual review with structured AI output.
         Created web-scraping pipelines that reduced manual supplier research and scraping time by 40%.`,
       color: "yellow"
     },
     {
       id:3,
-      position:"Intern",
+      position:"UX Research Intern",
       timeAndPlace: "LINE Fukuoka, Fukuoka • July 2022",
       responsibilities: `Researched UX pain points and proposed process automation strategies to reduce user support volume.`,
       color: "red"
@@ -154,6 +155,16 @@ April 2021 - March 2025`
       highlights: [
         "Built an agent that logs into public procurement platforms, searches for matching tenders, analyzes documentation, and sends summarized updates to users.",
         "Used LLM APIs and Playwright to automate contract discovery, document review, and notification workflows."
+      ]
+    },
+    {
+      id:5,
+      name:"Construction Company Management System",
+      meta: "Django + React + TypeScript + PostgreSQL",
+      timeframe: "2026",
+      highlights: [
+        "Built a web-based system that automates core business processes for a construction company — personnel and work-time tracking, site monitoring, document flow, and counterparty/material/supplier records.",
+        "Cut document search time by 60% by centralizing previously scattered document flow into a single system; actively used and continuously expanded with new features."
       ]
     },
   ]
