@@ -55,7 +55,7 @@ const experienceAccentClasses: Record<string, { border: string; text: string }> 
 const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
   const [visibleType, setVisibleType] = useState(type);
-  const introText = "本番運用レベルのWebアプリケーション、業務自動化ワークフロー、クラウドインフラを3年以上にわたり構築してきたフルスタックソフトウェアエンジニア。Kotlin、Python、TypeScript、AWS、CI/CDに強みがあり、英語・日本語・ロシア語の3言語に対応。設計から運用まで開発サイクル全体で信頼性の高いソリューションを提供します。";
+  const introText = "3年以上にわたりB2Bプロダクトの構築とスケーリングに携わってきたフルスタックソフトウェアエンジニア。AWSインフラを設計し、CI/CDパイプラインを自動化してリリース作業の負荷を約60%削減、250社以上に利用される文書交換プラットフォームを提供してきました。個人プロジェクトではLLMを活用した自動化エージェントも開発。英語・日本語・ロシア語の3言語に対応し、設計から運用まで開発サイクル全体で信頼性の高いソリューションを提供します。";
   const introEducation = `九州情報大学, 福岡 — Data Science (学士)
 2021年4月 - 2025年3月`;
   const introSkills = [
@@ -72,7 +72,7 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
       "id": 0,
       "position": "ソフトウェアエンジニア",
       "timeAndPlace": "株式会社スモールステップ, 福岡 • 2025年5月〜現在",
-      "responsibilities": "社内およびクライアント向けのWebシステム開発を構想段階から本番運用まで主導し、拡張性と長期的な保守性を向上。\nKotlinとPostgreSQLを用いて、高トランザクションの業務フローを支えるバックエンドアーキテクチャを設計。\nCognito、ALB、Auto Scaling Groups、EC2、PostgreSQL、Lambda、Fargateを活用し、スケーラブルなWebサービスとサーバーレス処理のための安定したAWS本番環境を構築。\nGitHub Actionsで自動本番デプロイ用のCI/CDパイプラインを構成し、手動リリース作業を60%削減しつつ高頻度リリースを支援。\nレスポンシブなReact UIコンポーネントを構築し、操作性を改善して平均処理時間を30%削減。",
+      "responsibilities": "社内およびクライアント向けのWebシステム開発を構想段階から本番運用まで主導し、拡張性と長期的な保守性を向上。\nKotlinとPostgreSQLを用いて、高トランザクションの業務フローを支えるバックエンドアーキテクチャを設計。重要なクエリをプロファイリングして書き直し、本番負荷下での平均レスポンスタイムを約30%削減。\nCognito、ALB、Auto Scaling Groups、EC2、PostgreSQL、Lambda、Fargateを活用し、スケーラブルなWebサービスとサーバーレス処理のための安定したAWS本番環境を構築。\nGitHub Actionsで自動本番デプロイ用のCI/CDパイプラインを構成し、手動リリース作業を60%削減しつつ高頻度リリースを支援。\n3つのクライアントプロダクトで使われるReactコンポーネントライブラリを設計し、UIパターンを標準化して新規開発者のオンボーディングを高速化。",
       "color": "cyan"
     },
 
@@ -80,19 +80,19 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
       "id": 1,
       "position": "Webデベロッパー",
       "timeAndPlace": "株式会社スモールステップ, 福岡 • 2023年4月〜2025年5月",
-      "responsibilities": "パートナー企業間の手作業による調整をなくす、Webベースの電子署名・文書交換プラットフォームを提供。\nB2Bクライアント向けにタスク管理と受注管理ツールを実装し、業務の可視性とワークフロー連携を改善。\n手術部門で利用される病院設備追跡システムを開発し、検索時間を短縮して在庫管理を改善。\nFlask、Vue/Nuxt.js、MySQLを用いて複数環境のアプリケーションを保守・デプロイし、強いフルスタック/DevOps実践を適用。",
+      "responsibilities": "パートナー企業間の手作業による調整をなくす、Webベースの電子署名・文書交換プラットフォームを提供 — 現在250社以上が利用。\nB2Bクライアント向けにタスク管理と受注管理ツールを実装し、業務の可視性とワークフロー連携を改善。\n3施設以上の病院に導入された設備追跡システムを開発し、手術チームに機器のリアルタイムな可視性を提供して準備の遅延を削減。\nタスク遂行から機能提供の独立したオーナーシップへと成長 — 要件のヒアリング、技術提案、監督なしでのエンドツーエンドの開発を担当。",
       "color": "green"
     },
     {
       "id": 2,
       "position": "オートメーションエンジニア",
       "timeAndPlace": "Mimamol, 福岡 • 2024年12月〜2025年3月",
-      "responsibilities": "Python、Playwright、n8nスタイルのオーケストレーションを用いて、商品調達向けのサプライヤー探索ワークフローを自動化。\nAIモデルを各ワークフローステップに組み込み、サプライヤー検索とデータフィルタリングのためのプロンプト設計を開発。\nWebスクレイピング基盤を構築し、手動のサプライヤー調査とスクレイピング時間を40%削減。",
+      "responsibilities": "Python、Playwright、n8nスタイルのオーケストレーションを用いて、商品調達向けのサプライヤー探索ワークフローを自動化。\nAIモデルを各ワークフローステップに組み込み、サプライヤー検索とデータフィルタリングのためのプロンプト設計を開発。\n3つの反復的なアナリスト業務にLLMベースのスコアリングを組み込み、手動レビューを構造化されたAI出力に置き換え。\nWebスクレイピング基盤を構築し、手動のサプライヤー調査とスクレイピング時間を40%削減。",
       "color": "yellow"
     },
     {
       "id": 3,
-      "position": "インターン",
+      "position": "UXリサーチインターン",
       "timeAndPlace": "LINE Fukuoka, 福岡 • 2022年7月",
       "responsibilities": "UX上の課題点を調査し、ユーザーサポート件数を減らすためのプロセス自動化戦略を提案。",
       "color": "red"
@@ -145,6 +145,16 @@ const ContentSectionJP: React.FC<ContentSectionProps> = ({ type, isActive, onClo
       highlights: [
         "公共調達プラットフォームにログインし、条件に合う入札案件を検索し、資料を分析して要約をユーザーへ送るエージェントを構築。",
         "LLM APIsとPlaywrightを使って、契約候補の発見、書類レビュー、通知ワークフローを自動化。"
+      ]
+    },
+    {
+      id:5,
+      name:"Construction Company Management System",
+      meta: "Django + React + TypeScript + PostgreSQL",
+      timeframe: "2026",
+      highlights: [
+        "建設会社の基幹業務を自動化するWebベースのシステムを開発 — 人員・勤怠管理、現場モニタリング、文書フロー、取引先・資材・仕入先の管理を含む。",
+        "散在していた文書フローを一元化し、文書検索時間を60%削減。実運用で継続的に機能を拡張中。"
       ]
     },
   ]
