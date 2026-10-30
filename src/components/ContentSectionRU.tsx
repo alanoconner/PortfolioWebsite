@@ -55,28 +55,31 @@ const experienceAccentClasses: Record<string, { border: string; text: string }> 
 const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
   const [visibleType, setVisibleType] = useState(type);
-  const introText = `Full-stack разработчик с более чем 3 годами опыта создания и масштабирования B2B-продуктов — проектировал инфраструктуру на AWS, автоматизировал CI/CD пайплайны, сократившие накладные расходы на релизы на ~60%, и разработал платформу обмена документами, которой сейчас пользуются 250+ компаний. Также создаю LLM-агентов для автоматизации в личных проектах. Свободно владею английским, японским и русским языками и уверенно довожу решения до результата на всех этапах разработки.`
+  const introText = `Software Engineer с более чем 3 годами опыта разработки B2B-продуктов, AWS-инфраструктуры и AI-автоматизации. Веду системы от архитектуры до продакшна, включая платформу обмена документами, которой пользуются 250+ компаний. Также создаю LLM-агентов и инструменты для разработчиков. Свободно владею английским, японским и русским языками.`
   const introEducation = `Институт информационных наук Кюсю, Фукуока — Data Science (бакалавриат)
-Апрель 2021 - Март 2025`
+Апрель 2021 - Март 2025
+Сертификаты Anthropic: Claude Code in Action (март 2026); Claude with the Anthropic API (апрель 2026)`
   const introSkills = [
     'Языки: русский (родной), английский (свободно), японский (свободно)',
     'Программирование: Kotlin, Python, TypeScript, JavaScript, Java',
-    'Frontend: React, Vue.js, Nuxt.js',
-    'Backend: Flask, Django, REST APIs, SpringBoot',
-    'Базы данных: PostgreSQL, MySQL',
-    'Cloud/DevOps: AWS, Docker, GitHub Actions, CI/CD, Linux, EC2, ALB, Lambda, Fargate, Cognito',
-    'Автоматизация/AI: Playwright, web scraping, workflow automation, LLM APIs, prompt engineering'
+    'Frontend: React, Vue.js, Nuxt.js, библиотеки компонентов',
+    'Backend: Kotlin, Python, Java, TypeScript, Spring Boot, Flask, Django, REST APIs',
+    'Базы данных: PostgreSQL, MySQL, профилирование и оптимизация запросов',
+    'Cloud/DevOps: AWS, Docker, GitHub Actions, CI/CD, мониторинг, Linux, EC2, ALB, Lambda, Fargate, Cognito',
+    'Автоматизация/AI: MCP, LLM APIs, оркестрация агентов, Yjs/CRDTs, Playwright, web scraping, workflow automation, prompt engineering'
   ]
   const experiences = [
     {
       id:0,
       position:"Software Engineer",
       timeAndPlace: "Small Step Co., Ltd., Фукуока • Май 2025 - Настоящее время",
-      responsibilities: `Руководил разработкой внутренних и клиентских веб-систем от идеи до продакшна, повышая масштабируемость и долгосрочную поддерживаемость.
+      responsibilities: `Развернул внутренний MCP-сервер в инфраструктуре компании и интегрировал его с облачной LLM, привязав ответы к внутренним данным и сократив время на исследование ошибок и анализ данных.
+                          Сократил рутинную нагрузку команды с помощью AI-автоматизации, освободив разработчиков для более сложных задач и стратегических приоритетов.
+                          Спроектировал и эксплуатировал AWS production-инфраструктуру с Cognito, ALB, Auto Scaling Groups, EC2, PostgreSQL, Lambda и Fargate, включая мониторинг нескольких активных B2B-клиентов.
+                          Руководил разработкой внутренних и клиентских веб-систем от идеи до продакшна, повышая масштабируемость и долгосрочную поддерживаемость.
                           Спроектировал backend-архитектуру на Kotlin и PostgreSQL для поддержки высоконагруженных транзакционных процессов; профилировал и переписал критичные запросы, сократив среднее время отклика на ~30% под продакшн-нагрузкой.
-                          Построил стабильную production-среду в AWS с использованием Cognito, ALB, Auto Scaling Groups, EC2, PostgreSQL, Lambda и Fargate для масштабируемых web и serverless сервисов.
                           Настроил CI/CD пайплайны на GitHub Actions для автоматизированных production-деплоев, сократив ручную работу при релизах на 60% и поддержав частые поставки.
-                          Разработал библиотеку React-компонентов, используемую в 3 клиентских продуктах, стандартизировав UI-паттерны и ускорив онбординг новых разработчиков.`,
+                          Разработал библиотеку React-компонентов, используемую в 3 клиентских продуктах, стандартизировав UI-паттерны, сократив объём работы над отдельными фичами и ускорив онбординг новых разработчиков.`,
       color: 'cyan'
     },
 
@@ -92,9 +95,10 @@ const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClo
     },
     {
       id:2,
-      position:"Automation Engineer",
+      position:"Automation Engineer (Part-time)",
       timeAndPlace: "Mimamol, Фукуока • Декабрь 2024 - Март 2025",
-      responsibilities: `Построил автоматизированные workflow для поиска поставщиков в задачах product sourcing с использованием Python, Playwright и orchestration в стиле n8n.
+      responsibilities: `Создал pipeline поиска поставщиков на Python и Playwright для поиска, фильтрации и оценки компаний, сократив время исследования примерно на 40% за один цикл sourcing.
+                          Построил автоматизированные workflow для поиска поставщиков в задачах product sourcing с использованием Python, Playwright и orchestration в стиле n8n.
                           Интегрировал AI-модели в отдельные шаги процесса и разработал подходы prompt engineering для поиска поставщиков и фильтрации данных.
                           Внедрил LLM-скоринг в 3 повторяющихся аналитических процесса, заменив ручную проверку структурированным AI-выводом.
                           Создал web-scraping пайплайны, которые сократили время ручного поиска поставщиков и сбора данных на 40%.`,
@@ -112,24 +116,36 @@ const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClo
   const projects = [
     {
       id:0,
-      name:"AI Outfit Recommender",
-      meta: "Flask + Python",
-      timeframe: "2024",
+      name:"Agent Sync Layer",
+      meta: "Personal Project - Yjs/CRDTs + Git Worktrees + MCP",
+      timeframe: "2026",
       highlights: [
-        "Создал ML-инструмент, который предлагает сочетания одежды на основе загруженных пользователем изображений."
+        "Создал слой синхронизации для параллельно работающих агентов Codex и Claude Code на базе Yjs CRDT и изолированных Git worktree: независимые текстовые изменения объединяются, а устаревшие пересекающиеся изменения отклоняются.",
+        "Реализовал надёжное восстановление после сбоев, валидацию перед интеграцией и поэтапный merge workflow; предоставил SDK и MCP-прокси для подключения дополнительных агентов."
       ]
     },
     {
       id:1,
-      name:'Online School Platform "TeraSchool"',
-      meta: "Vue + Flask + MySQL",
-      timeframe: "2025",
+      name:"Tender Search Agent",
+      meta: "Personal Project - LLM + Playwright + Python",
+      timeframe: "2026",
       highlights: [
-        "Разработал веб-систему управления онлайн-школой, предназначенную для поддержки структурированного обучения и упрощения процесса проведения курсов."
+        "Создал агента, который входит на платформы государственных закупок, ищет подходящие тендеры, анализирует документацию и отправляет пользователям краткие Telegram-уведомления.",
+        "Использовал LLM APIs и Playwright для автоматизации многочасового ежедневного поиска контрактов, анализа документов и уведомлений; система активно используется."
       ]
     },
     {
       id:2,
+      name:"Construction Company Management System",
+      meta: "Django + React + TypeScript + PostgreSQL",
+      timeframe: "2026",
+      highlights: [
+        "Разработал активно используемую систему для учёта персонала и рабочего времени, мониторинга объектов, документооборота, контрагентов, материалов, поставщиков и доставок.",
+        "Сократил время поиска документов на 60%, централизовав данные об объектах, персонале и документах; система активно используется и постоянно расширяется."
+      ]
+    },
+    {
+      id:3,
       name:"Smeta Tool",
       meta: "Freelance Project, Remote - Desktop Python Application",
       timeframe: "Февраль 2026 - Март 2026",
@@ -139,7 +155,7 @@ const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClo
       ]
     },
     {
-      id:3,
+      id:4,
       name:"Startup Idea Analysis Agent",
       meta: "Personal Project - LLM + Telegram + Python",
       timeframe: "2026",
@@ -148,23 +164,21 @@ const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClo
       ]
     },
     {
-      id:4,
-      name:"Tender Search Agent",
-      meta: "Personal Project - LLM + Playwright + Python",
-      timeframe: "2026",
+      id:5,
+      name:'Online School Platform "TeraSchool"',
+      meta: "Vue + Flask + MySQL",
+      timeframe: "2025",
       highlights: [
-        "Создал агента, который входит на платформы государственных закупок, ищет подходящие тендеры, анализирует документацию и отправляет пользователям краткие обновления.",
-        "Использовал LLM APIs и Playwright для автоматизации поиска контрактов, анализа документов и уведомлений."
+        "Разработал веб-систему управления онлайн-школой, предназначенную для поддержки структурированного обучения и упрощения процесса проведения курсов."
       ]
     },
     {
-      id:5,
-      name:"Construction Company Management System",
-      meta: "Django + React + TypeScript + PostgreSQL",
-      timeframe: "2026",
+      id:6,
+      name:"AI Outfit Recommender",
+      meta: "Flask + Python",
+      timeframe: "2024",
       highlights: [
-        "Разработал веб-систему, автоматизирующую ключевые бизнес-процессы строительной компании — учёт персонала и рабочего времени, мониторинг объектов, документооборот, а также учёт контрагентов, материалов и поставщиков.",
-        "Сократил время поиска документов на 60%, объединив ранее разрозненный документооборот в единую систему; активно используется и продолжает дорабатываться."
+        "Создал ML-инструмент, который предлагает сочетания одежды на основе загруженных пользователем изображений."
       ]
     },
   ]
@@ -326,6 +340,10 @@ const ContentSectionRU: React.FC<ContentSectionProps> = ({ type, isActive, onClo
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
                   <span className="text-cyan-400 text-sm"><TypingText text="Email:" delay={0} /></span>
                   <span className="text-yellow-400 text-sm break-words"><TypingText text="akhmadullin01@gmail.com" delay={100} /></span>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
+                  <span className="text-cyan-400 text-sm"><TypingText text="Телефон:" delay={200} /></span>
+                  <a href="tel:+817075886879" className="text-yellow-400 text-sm break-words"><TypingText text="+81 (707) 588-6879" delay={300} /></a>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
                   <span className="text-cyan-400 text-sm"><TypingText text="GitHub:" delay={300} /></span>

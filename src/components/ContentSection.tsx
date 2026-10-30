@@ -55,28 +55,31 @@ const experienceAccentClasses: Record<string, { border: string; text: string }> 
 const ContentSection: React.FC<ContentSectionProps> = ({ type, isActive, onClose }) => {
   const [showContent, setShowContent] = useState(false);
   const [visibleType, setVisibleType] = useState(type);
-  const introText = `Full-stack Software Engineer with 3+ years building and scaling B2B products — designed AWS infrastructure, automated CI/CD pipelines that cut release overhead by ~60%, and delivered a document exchange platform now used by 250+ companies. Also builds LLM-powered automation agents on the side. Trilingual in English, Japanese, and Russian and skilled at delivering reliable solutions across the full development cycle.`
+  const introText = `Software Engineer with 3+ years delivering B2B products, AWS infrastructure, and AI automation. Owns systems from architecture through production, including a document exchange platform used by 250+ companies. Also builds LLM-powered automation agents and developer tooling. Trilingual in English, Japanese, and Russian.`
   const introEducation = `Kyushu Institute of Information Sciences, Fukuoka — Data Science (bachelor)
-April 2021 - March 2025`
+April 2021 - March 2025
+Certifications, Anthropic: Claude Code in Action (March 2026); Claude with the Anthropic API (April 2026)`
   const introSkills = [
     'Languages: Russian (native), English (fluent), Japanese (fluent)',
     'Programming: Kotlin, Python, TypeScript, JavaScript, Java',
-    'Frontend: React, Vue.js, Nuxt.js',
-    'Backend: Flask, Django, REST APIs, SpringBoot',
-    'Databases: PostgreSQL, MySQL',
-    'Cloud/DevOps: AWS, Docker, GitHub Actions, CI/CD, Linux, EC2, ALB, Lambda, Fargate, Cognito',
-    'Automation/AI: Playwright, web scraping, workflow automation, LLM APIs, prompt engineering'
+    'Frontend: React, Vue.js, Nuxt.js, component libraries',
+    'Backend: Kotlin, Python, Java, TypeScript, Spring Boot, Flask, Django, REST APIs',
+    'Databases: PostgreSQL, MySQL, query profiling and optimization',
+    'Cloud/DevOps: AWS, Docker, GitHub Actions, CI/CD, monitoring, Linux, EC2, ALB, Lambda, Fargate, Cognito',
+    'Automation/AI: MCP, LLM APIs, agent orchestration, Yjs/CRDTs, Playwright, web scraping, workflow automation, prompt engineering'
   ]
   const experiences = [
     {
       id:0,
       position:"Software Engineer",
       timeAndPlace: "Small Step Co., Ltd., Fukuoka • May 2025 - Present",
-      responsibilities: `Led development of internal and client-facing web systems from concept to production, improving scalability and long-term maintainability.
+      responsibilities: `Deployed an internal MCP server on company infrastructure and integrated it with a cloud-hosted LLM, grounding responses in internal data and reducing time spent investigating bugs and analyzing data.
+        Reduced the team's routine workload through AI automation, freeing developers to focus on more complex tasks and strategic priorities.
+        Designed and operated AWS production infrastructure using Cognito, ALB, Auto Scaling Groups, EC2, PostgreSQL, Lambda, and Fargate, including monitoring for multiple live B2B clients.
+        Led development of internal and client-facing web systems from concept to production, improving scalability and long-term maintainability.
         Designed backend architecture using Kotlin and PostgreSQL to support high-volume transactional workflows; profiled and rewrote critical queries, cutting average response time by ~30% under production load.
-        Built a stable AWS production environment using Cognito, ALB, Auto Scaling Groups, EC2, PostgreSQL, Lambda, and Fargate for scalable web and serverless services.
         Configured CI/CD pipelines with GitHub Actions for automated production deployments, reducing manual release work by 60% and supporting frequent releases.
-        Designed a React component library used across 3 client products, standardizing UI patterns and speeding up developer onboarding.`,
+        Designed a React component library used across 3 client products, standardizing UI patterns, reducing per-feature development work, and speeding up developer onboarding.`,
       color: 'cyan'
     },
 
@@ -92,9 +95,10 @@ April 2021 - March 2025`
     },
     {
       id:2,
-      position:"Automation Engineer",
+      position:"Automation Engineer (Part-time)",
       timeAndPlace: "Mimamol, Fukuoka • December 2024 - March 2025",
-      responsibilities: `Built automated supplier discovery workflows for product sourcing using Python, Playwright, and n8n-style orchestration.
+      responsibilities: `Built a supplier discovery pipeline with Python and Playwright to find, filter, and score vendors, cutting research time by ~40% per sourcing cycle.
+        Built automated supplier discovery workflows for product sourcing using Python, Playwright, and n8n-style orchestration.
         Integrated AI models into workflow steps and developed prompt engineering approaches for supplier search and data filtering.
         Embedded LLM-based scoring into 3 repetitive analyst workflows, replacing manual review with structured AI output.
         Created web-scraping pipelines that reduced manual supplier research and scraping time by 40%.`,
@@ -112,24 +116,36 @@ April 2021 - March 2025`
   const projects = [
     {
       id:0,
-      name:"AI Outfit Recommender",
-      meta: "Flask + Python",
-      timeframe: "2024",
+      name:"Agent Sync Layer",
+      meta: "Personal Project - Yjs/CRDTs + Git Worktrees + MCP",
+      timeframe: "2026",
       highlights: [
-        "Built an ML-powered tool that suggests outfit combinations from user-uploaded images."
+        "Built a synchronization layer for concurrent Codex and Claude Code agents using Yjs CRDTs and isolated Git worktrees, merging independent text edits and rejecting stale overlapping changes.",
+        "Implemented durable crash recovery, validation before integration, and a staged merge workflow; exposed an SDK and MCP proxy for additional agent integrations."
       ]
     },
     {
       id:1,
-      name:'Online School Platform "TeraSchool"',
-      meta: "Vue + Flask + MySQL",
-      timeframe: "2025",
+      name:"Tender Search Agent",
+      meta: "Personal Project - LLM + Playwright + Python",
+      timeframe: "2026",
       highlights: [
-        "Developed a web-based school management system designed to support structured learning and streamline course delivery for online education."
+        "Built an agent that logs into public procurement platforms, searches for matching tenders, analyzes documentation, and sends summarized Telegram updates to users.",
+        "Used LLM APIs and Playwright to automate hours of daily contract discovery, document review, and notification work; currently in active use."
       ]
     },
     {
       id:2,
+      name:"Construction Company Management System",
+      meta: "Django + React + TypeScript + PostgreSQL",
+      timeframe: "2026",
+      highlights: [
+        "Built an actively used system covering personnel and work-time tracking, site monitoring, document flow, counterparties, materials, suppliers, and deliveries.",
+        "Cut document search time by 60% by centralizing site, personnel, and document data; actively used and continuously expanded with new features."
+      ]
+    },
+    {
+      id:3,
       name:"Smeta Tool",
       meta: "Freelance Project, Remote - Desktop Python Application",
       timeframe: "February 2026 - March 2026",
@@ -139,7 +155,7 @@ April 2021 - March 2025`
       ]
     },
     {
-      id:3,
+      id:4,
       name:"Startup Idea Analysis Agent",
       meta: "Personal Project - LLM + Telegram + Python",
       timeframe: "2026",
@@ -148,23 +164,21 @@ April 2021 - March 2025`
       ]
     },
     {
-      id:4,
-      name:"Tender Search Agent",
-      meta: "Personal Project - LLM + Playwright + Python",
-      timeframe: "2026",
+      id:5,
+      name:'Online School Platform "TeraSchool"',
+      meta: "Vue + Flask + MySQL",
+      timeframe: "2025",
       highlights: [
-        "Built an agent that logs into public procurement platforms, searches for matching tenders, analyzes documentation, and sends summarized updates to users.",
-        "Used LLM APIs and Playwright to automate contract discovery, document review, and notification workflows."
+        "Developed a web-based school management system designed to support structured learning and streamline course delivery for online education."
       ]
     },
     {
-      id:5,
-      name:"Construction Company Management System",
-      meta: "Django + React + TypeScript + PostgreSQL",
-      timeframe: "2026",
+      id:6,
+      name:"AI Outfit Recommender",
+      meta: "Flask + Python",
+      timeframe: "2024",
       highlights: [
-        "Built a web-based system that automates core business processes for a construction company — personnel and work-time tracking, site monitoring, document flow, and counterparty/material/supplier records.",
-        "Cut document search time by 60% by centralizing previously scattered document flow into a single system; actively used and continuously expanded with new features."
+        "Built an ML-powered tool that suggests outfit combinations from user-uploaded images."
       ]
     },
   ]
@@ -326,6 +340,10 @@ April 2021 - March 2025`
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
                   <span className="text-cyan-400 text-sm"><TypingText text="Email:" delay={0} /></span>
                   <span className="text-yellow-400 text-sm break-words"><TypingText text="akhmadullin01@gmail.com" delay={100} /></span>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
+                  <span className="text-cyan-400 text-sm"><TypingText text="Phone:" delay={200} /></span>
+                  <a href="tel:+817075886879" className="text-yellow-400 text-sm break-words"><TypingText text="+81 (707) 588-6879" delay={300} /></a>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
                   <span className="text-cyan-400 text-sm"><TypingText text="GitHub:" delay={300} /></span>
